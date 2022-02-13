@@ -1,6 +1,8 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import * as AWS from 'aws-sdk';
+import {environment} from 'src/environments/environment';
+import {BackgroundColors} from '../../consts';
 
 @Component({
   selector: 'app-pw-home',
@@ -20,19 +22,8 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   currentKey = '';
   header = 'https://summber-obj.kr.object.ncloudstorage.com/';
   contents: any[] = [];
-  backgroundColors = [
-    'black',
-    'white',
-    'tomato',
-    'orange',
-    'gold',
-    'green',
-    'skyblue',
-    'blue',
-    'purple',
-    'brown',
-    'grey',
-  ];
+
+  readonly backgroundColors = BackgroundColors;
 
   constructor() {}
 
@@ -150,8 +141,8 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
       endpoint,
       region,
       credentials: {
-        accessKeyId: 'Uo8hRKPVxVAvpMN6IOtZ',
-        secretAccessKey: 'NP6XeNgde0PPYKJNindruuGUlA8DlW6fVW1lgLRJ',
+        accessKeyId: environment.accessKeyId,
+        secretAccessKey: environment.secretAccessKey,
       },
     });
     bucket.upload(params, {}, (err, data) => {
@@ -203,7 +194,6 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   }
 
   onClickImg(key: string): void {
-    console.log('key', key);
     this.currentKey = key;
   }
 }

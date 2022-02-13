@@ -17,6 +17,11 @@ const routes: Routes = [
         loadChildren: () => import('./modules/home/home.module').then(mod => mod.HomeModule),
         data: {title: '홈'},
       },
+      {
+        path: 'draw',
+        loadChildren: () => import('./modules/draw/draw.module').then(mod => mod.DrawModule),
+        data: {title: '그리기'},
+      },
     ],
   },
   {

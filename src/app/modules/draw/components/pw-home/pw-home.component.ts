@@ -4,6 +4,9 @@ import * as AWS from 'aws-sdk';
 import {environment} from 'src/environments/environment';
 import {BackgroundColors} from '../../consts';
 
+const MAX_KEYS = 300;
+const OBJECT_STORE_HEADER = 'https://summber-obj.kr.object.ncloudstorage.com/';
+const END_POINT = 'https://kr.object.ncloudstorage.com';
 @Component({
   selector: 'app-pw-home',
   templateUrl: './pw-home.component.html',
@@ -20,8 +23,17 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   x = 0;
   y = 0;
   currentKey = '';
-  header = 'https://summber-obj.kr.object.ncloudstorage.com/';
+  header = OBJECT_STORE_HEADER;
   contents: any[] = [];
+
+  bucket = new AWS.S3({
+    endpoint: new AWS.Endpoint(END_POINT),
+    region: environment.region,
+    credentials: {
+      accessKeyId: environment.accessKeyId,
+      secretAccessKey: environment.secretAccessKey,
+    },
+  });
 
   readonly backgroundColors = BackgroundColors;
 
@@ -43,7 +55,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     this.context.lineWidth = 2.5;
     this.context.fillStyle = 'transparent';
     this.context.fillRect(0, 0, canvas.width, canvas.height);
-    this.context.strokeStyle = '#000000';
+    this.context.strokeStyle = '#000000'; // black
     this.canvas.nativeElement.addEventListener('mousemove', this.onMouseMove, false);
   }
 
@@ -120,7 +132,6 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   };
 
   uploadCanvasToServer() {
-    console.log('uploadCanvasToServer');
     if (!this.canvas) {
       return;
     }
@@ -129,24 +140,14 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     const blobData = this.dataURItoBlob(dataUrl);
     const fileName = `${Math.random() * 100}.png`;
     const params = {
-      Bucket: 'summber-obj',
+      Bucket: environment.bucket_name,
       Key: fileName,
       Body: blobData,
       ACL: 'public-read',
       ContentType: 'image/png',
     };
-    const endpoint = new AWS.Endpoint('https://kr.object.ncloudstorage.com');
-    const region = 'kr-standard';
-    const bucket = new AWS.S3({
-      endpoint,
-      region,
-      credentials: {
-        accessKeyId: environment.accessKeyId,
-        secretAccessKey: environment.secretAccessKey,
-      },
-    });
-    bucket.upload(params, {}, (err, data) => {
-      console.log(data);
+
+    this.bucket.upload(params, {}, (err, data) => {
       const message = err ? 'ERROR!' : 'UPLOADED';
       alert(message);
       this.getDatas();
@@ -161,36 +162,24 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
   }
   getDatas() {
-    const endpoint = new AWS.Endpoint('https://kr.object.ncloudstorage.com');
-    const region = 'kr-standard';
-    const S3 = new AWS.S3({
-      endpoint: endpoint,
-      region: region,
-      credentials: {
-        accessKeyId: 'Uo8hRKPVxVAvpMN6IOtZ',
-        secretAccessKey: 'NP6XeNgde0PPYKJNindruuGUlA8DlW6fVW1lgLRJ',
-      },
-    });
-    const bucket_name = 'summber-obj';
-    const MAX_KEYS = 300;
     const params = {
-      Bucket: bucket_name,
+      Bucket: environment.bucket_name,
       MaxKeys: MAX_KEYS,
     };
     const listAllKeys = (params: any, out = []) =>
       new Promise((resolve, reject) => {
-        S3.listObjectsV2(params)
+        this.bucket
+          .listObjectsV2(params)
           .promise()
           .then(({Contents, IsTruncated, NextContinuationToken}) => {
             this.contents = Contents as any;
-            console.log(Contents);
             !IsTruncated
               ? resolve(out)
               : resolve(listAllKeys(Object.assign(params, {ContinuationToken: NextContinuationToken}), out));
           })
           .catch(reject);
       });
-    listAllKeys({Bucket: 'summber-obj'});
+    listAllKeys(params);
   }
 
   onClickImg(key: string): void {

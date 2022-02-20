@@ -7,11 +7,12 @@ import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {WrapperComponent} from './components/wrapper/wrapper.component';
 import {HttpInterceptorService} from './services/httpInterceptor.service';
+import {LoginService} from './services/login.service';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent, WrapperComponent],
   imports: [BrowserModule, AppRoutingModule],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: false}],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: false}, LoginService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

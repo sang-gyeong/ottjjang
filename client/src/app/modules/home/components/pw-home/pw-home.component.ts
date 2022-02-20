@@ -11,12 +11,7 @@ export class PwHomeComponent implements OnInit {
   constructor(private loginService: LoginService, private http: HttpClient) {}
 
   ngOnInit(): any {
-    console.log(document.cookie);
-    return this.http
-      .get('http://localhost:3000/api/main', {
-        headers: {'Content-Type': 'application/json', Authorization: `${document.cookie.split('=')[1]}`},
-      })
-      .subscribe(v => console.log(v));
+    return this.http.get('http://localhost:3000/api/main').subscribe(v => console.log(v));
   }
 
   onClickLogin(): any {

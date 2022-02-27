@@ -6,6 +6,7 @@ export interface IJwtPayload {
   id: number;
   nickname: string;
   profileURL: string;
+  kakaoId: string;
 }
 
 export const authenticateWithJwt = async (
@@ -14,10 +15,8 @@ export const authenticateWithJwt = async (
   next: NextFunction
 ): Promise<any> => {
   try {
-    console.log("req.headers : ", req.headers);
     const token = req.headers.authorization;
     // TODO: redirect 시킬 지 논의해보기
-    console.log("token : ", token);
     if (!token) return res.redirect(process.env.SERVICE_URL as string);
     const user = jwt.verify(
       token as string,
@@ -42,6 +41,7 @@ export const tryAuthenticateWithJwt = (
       token as string,
       process.env.JWT_SECRET as string
     ) as IJwtPayload;
+    console.log('req.user ', user)
     req.user = user;
     next();
   } catch (err) {

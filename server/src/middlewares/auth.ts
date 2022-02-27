@@ -41,7 +41,6 @@ export const tryAuthenticateWithJwt = (
       token as string,
       process.env.JWT_SECRET as string
     ) as IJwtPayload;
-    console.log('req.user ', user)
     req.user = user;
     next();
   } catch (err) {

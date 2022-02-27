@@ -7,7 +7,6 @@ export class HttpInterceptorService implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('cookie', document.cookie);
     request = request.clone({
       withCredentials: true,
       setHeaders: {

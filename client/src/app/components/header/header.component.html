@@ -1,8 +1,10 @@
-<div *ngIf="vm$ | async as vm">
-  <p>{{ vm.nickname }}</p>
+<div *ngIf="vm$ | async as vm" class="header">
+  <div style="display: flex; justify-content: end">
+    <p>{{ vm.nickname }}</p>
 
-  <img *ngIf="vm.profileURL.length; else no" [src]="vm.profileURL" alt="userProfileURL" />
-  <ng-template #no>
-    <p>로그인 해주세요</p>
-  </ng-template>
+    <img *ngIf="vm.profileURL.length; else no" [src]="vm.profileURL" alt="userProfileURL" />
+    <ng-template #no>
+      <p>로그인 해주세요</p>
+    </ng-template>
+  </div>
 </div>

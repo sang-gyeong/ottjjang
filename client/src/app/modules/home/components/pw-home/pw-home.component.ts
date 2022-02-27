@@ -1,6 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
 import {LoginService} from 'src/app/services/login.service';
+import * as mainActions from '../../../../actions/main.action';
+import * as MainReducer from '../../../../reducers/main.reducer';
 
 @Component({
   selector: 'app-pw-home',
@@ -8,10 +11,10 @@ import {LoginService} from 'src/app/services/login.service';
   styleUrls: ['./pw-home.component.css'],
 })
 export class PwHomeComponent implements OnInit {
-  constructor(private loginService: LoginService, private http: HttpClient) {}
+  constructor(private loginService: LoginService, private store$: Store<MainReducer.State>) {}
 
   ngOnInit(): any {
-    return this.http.get('http://localhost:3000/api/main').subscribe(v => console.log(v));
+    this.store$.dispatch(mainActions.loadMainData());
   }
 
   onClickLogin(): any {

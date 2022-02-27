@@ -1,1 +1,8 @@
-<p>header works!</p>
+<div *ngIf="vm$ | async as vm">
+  <p>{{ vm.nickname }}</p>
+
+  <img *ngIf="vm.profileURL.length; else no" [src]="vm.profileURL" alt="userProfileURL" />
+  <ng-template #no>
+    <p>로그인 해주세요</p>
+  </ng-template>
+</div>

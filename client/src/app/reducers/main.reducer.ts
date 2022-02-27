@@ -5,14 +5,16 @@ import * as mainActions from '../actions/main.action';
 export interface State {
   user?: {
     id: number;
+    kakaoId: string | number;
     nickname: string;
     profileURL: string;
   };
 }
 
-const initialState: State = {
+export const initialState: State = {
   user: {
     id: 0,
+    kakaoId: '',
     nickname: '',
     profileURL: '',
   },
@@ -21,7 +23,6 @@ const initialState: State = {
 const mainReducer = createReducer(
   initialState,
   mutableOn(mainActions.loadMainDataComplete, (state: State, {res}) => {
-    console.log(res.data[0].user);
     state.user = res.data[0].user;
   })
 );

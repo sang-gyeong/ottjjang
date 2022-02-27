@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {MainGuard} from './guards/main.guard';
 import {WrapperComponent} from './components/wrapper/wrapper.component';
 
 const routes: Routes = [
@@ -10,6 +11,7 @@ const routes: Routes = [
   },
   {
     path: '',
+    canActivate: [MainGuard],
     component: WrapperComponent,
     children: [
       {

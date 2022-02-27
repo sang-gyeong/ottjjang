@@ -13,9 +13,7 @@ import * as MainReducer from '../../../../reducers/main.reducer';
 export class PwHomeComponent implements OnInit {
   constructor(private loginService: LoginService, private store$: Store<MainReducer.State>) {}
 
-  ngOnInit(): any {
-    this.store$.dispatch(mainActions.loadMainData());
-  }
+  ngOnInit(): any {}
 
   onClickLogin(): any {
     this.loginService.redirectToLogin();

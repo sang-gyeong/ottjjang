@@ -14,10 +14,10 @@ export class MainGuard implements CanActivate {
   canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return this.loginService.get().pipe(
       tap(res => this.store$.dispatch(mainActions.loadMainDataComplete({res}))),
-      mapTo(true)
-      // catchError(err => {
-      //   throw err;
-      // })
+      mapTo(true),
+      catchError(err => {
+        throw err;
+      })
     );
   }
 }

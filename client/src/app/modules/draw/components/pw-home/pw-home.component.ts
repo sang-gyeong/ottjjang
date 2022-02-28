@@ -144,8 +144,8 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     const canvas = this.canvas.nativeElement;
     const dataUrl = canvas.toDataURL('image/png');
     const blobData = this.dataURItoBlob(dataUrl);
-    const fileName = `${Math.random() * 100}.png`;
-    const params = {
+    const fileName = `${this.kakaoId}/${Math.random() * 100}.png`;
+    const params: AWS.S3.PutObjectRequest = {
       Bucket: environment.bucket_name,
       Key: fileName,
       Body: blobData,

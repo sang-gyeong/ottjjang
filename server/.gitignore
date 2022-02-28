@@ -82,6 +82,15 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
 # TypeScript v1 declaration files
 typings/
 

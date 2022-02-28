@@ -20,15 +20,19 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
 
   painting$ = new BehaviorSubject<boolean>(false);
   filling$ = new BehaviorSubject<boolean>(false);
-  context?: CanvasRenderingContext2D | null;
 
+  context?: CanvasRenderingContext2D | null;
   x = 0;
   y = 0;
   currentKey = '';
   header = OBJECT_STORE_HEADER;
   contents: any[] = [];
 
-  bucket = new AWS.S3({
+  private kakaoId = NaN;
+  private selectUserKakaoId$ = this.store$.select(fromRoot.selectUser).pipe(map(user => user?.kakaoId ?? NaN));
+
+  readonly backgroundColors = BackgroundColors;
+  readonly bucket = new AWS.S3({
     endpoint: new AWS.Endpoint(END_POINT),
     region: environment.region,
     credentials: {
@@ -37,13 +41,8 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     },
   });
 
-  private kakaoId = NaN;
-  private selectUserId$ = this.store$.select(fromRoot.selectUser).pipe(map(user => user?.kakaoId ?? NaN));
-
-  readonly backgroundColors = BackgroundColors;
-
   constructor(private store$: Store<fromRoot.State>) {
-    this.selectUserId$.subscribe(kakaoId => (this.kakaoId = kakaoId));
+    this.selectUserKakaoId$.subscribe(kakaoId => (this.kakaoId = kakaoId));
   }
 
   ngOnInit() {
@@ -160,6 +159,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
       this.getDatas();
     });
   }
+
   dataURItoBlob(dataURI: any) {
     const binary = atob(dataURI.split(',')[1]);
     const array = [];
@@ -168,12 +168,14 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     }
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
   }
+
   getDatas() {
     const params: AWS.S3.ListObjectsV2Request = {
       Bucket: environment.bucket_name,
       MaxKeys: MAX_KEYS,
       Prefix: `${this.kakaoId}`,
     };
+
     const listAllKeys = (params: AWS.S3.ListObjectsV2Request, out = []) =>
       new Promise((resolve, reject) => {
         this.bucket
@@ -187,10 +189,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
           })
           .catch(reject);
       });
-    listAllKeys(params);
-  }
 
-  onClickImg(key: string): void {
-    this.currentKey = key;
+    listAllKeys(params);
   }
 }

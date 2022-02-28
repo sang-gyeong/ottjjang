@@ -5,7 +5,7 @@ import * as mainActions from '../actions/main.action';
 export interface State {
   user?: {
     id: number;
-    kakaoId: string | number;
+    kakaoId: number;
     nickname: string;
     profileURL: string;
   };
@@ -14,7 +14,7 @@ export interface State {
 export const initialState: State = {
   user: {
     id: 0,
-    kakaoId: '',
+    kakaoId: NaN,
     nickname: '',
     profileURL: '',
   },

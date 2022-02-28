@@ -1,8 +1,10 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, map, tap} from 'rxjs';
 import * as AWS from 'aws-sdk';
 import {environment} from 'src/environments/environment';
 import {BackgroundColors} from '../../consts';
+import * as fromRoot from '../../../../reducers/main.reducer';
+import {Store} from '@ngrx/store';
 
 const MAX_KEYS = 300;
 const OBJECT_STORE_HEADER = 'https://summber-obj.kr.object.ncloudstorage.com/';
@@ -35,9 +37,14 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     },
   });
 
+  private kakaoId = NaN;
+  private selectUserId$ = this.store$.select(fromRoot.selectUser).pipe(map(user => user?.kakaoId ?? NaN));
+
   readonly backgroundColors = BackgroundColors;
 
-  constructor() {}
+  constructor(private store$: Store<fromRoot.State>) {
+    this.selectUserId$.subscribe(kakaoId => (this.kakaoId = kakaoId));
+  }
 
   ngOnInit() {
     this.getDatas();
@@ -162,11 +169,12 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
   }
   getDatas() {
-    const params = {
+    const params: AWS.S3.ListObjectsV2Request = {
       Bucket: environment.bucket_name,
       MaxKeys: MAX_KEYS,
+      Prefix: `${this.kakaoId}`,
     };
-    const listAllKeys = (params: any, out = []) =>
+    const listAllKeys = (params: AWS.S3.ListObjectsV2Request, out = []) =>
       new Promise((resolve, reject) => {
         this.bucket
           .listObjectsV2(params)

@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const loadDatabases = async (): Promise<void> => {
-  await typeorm.createConnection();
+  await typeorm.createConnection().catch(err => console.log("Data Access Error : ", err));
   console.log("MySQL Connected!");
   // await mongoose.connect(process.env.MONGO_URI as string, {
   //   useNewUrlParser: true,

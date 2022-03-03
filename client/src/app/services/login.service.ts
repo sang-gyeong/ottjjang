@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class LoginService {
@@ -17,10 +18,10 @@ export class LoginService {
   }
 
   redirectToLogin(url?: string, next?: string, force?: boolean): void {
-    window.location.href = 'http://localhost:3000/api/auth/login';
+    window.location.href = `${environment.service_url}/api/auth/login`;
   }
 
   refresh(): Observable<any> {
-    return (this.main$ = this.http.get<any>('http://localhost:3000/api/main').pipe(shareReplay(1)));
+    return (this.main$ = this.http.get<any>(`${environment.service_url}/api/main`).pipe(shareReplay(1)));
   }
 }

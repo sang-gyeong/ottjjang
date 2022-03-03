@@ -23,7 +23,9 @@ export const initialState: State = {
 const mainReducer = createReducer(
   initialState,
   mutableOn(mainActions.loadMainDataComplete, (state: State, {res}) => {
-    state.user = res.data[0].user;
+    if (res.data) {
+      state.user = res?.data[0]?.user;
+    }
   })
 );
 

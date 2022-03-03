@@ -16,8 +16,6 @@ export const authenticateWithJwt = async (
 ): Promise<any> => {
   try {
     const token = req.headers.authorization;
-    // TODO: redirect 시킬 지 논의해보기
-    if (!token) return res.redirect(process.env.SERVICE_URL as string);
     const user = jwt.verify(
       token as string,
       process.env.JWT_SECRET as string
@@ -26,7 +24,7 @@ export const authenticateWithJwt = async (
     next();
   } catch (err) {
     // TODO: redirect 시킬 지 논의해보기
-    res.status(401).json({ success: false, message: "Invalid Token" });
+     res.status(200).json({ success: false, message: "Invalid Token" });
   }
 };
 

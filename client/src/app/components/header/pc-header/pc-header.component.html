@@ -6,9 +6,9 @@
     </a>
     <div class="header_profile_wrapper">
       <p class="txt_nickname">{{ vm.nickname }}</p>
-      <img *ngIf="vm.profileURL.length; else no" [src]="vm.profileURL" alt="userProfileURL" />
-      <ng-template #no>
-        <p>로그인 해주세요</p>
+      <img *ngIf="vm.profileURL.length; else noUser" [src]="vm.profileURL" alt="userProfileURL" />
+      <ng-template #noUser>
+        <p (click)="onClickLogin()">로그인 해주세요</p>
       </ng-template>
     </div>
   </div>

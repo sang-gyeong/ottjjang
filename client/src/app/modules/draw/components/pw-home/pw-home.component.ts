@@ -5,7 +5,6 @@ import {environment} from 'src/environments/environment';
 import {BackgroundColors} from '../../consts';
 import * as fromRoot from '../../../../reducers/main.reducer';
 import {Store} from '@ngrx/store';
-import {reject} from 'lodash';
 
 const MAX_KEYS = 300;
 const OBJECT_STORE_HEADER = 'https://summber-obj.kr.object.ncloudstorage.com/';
@@ -81,6 +80,13 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
       return;
     }
     const canvas = this.canvas.nativeElement;
+    const c_cs = getComputedStyle(canvas);
+    const c_w = parseInt(c_cs.getPropertyValue('width'), 10);
+    const c_h = parseInt(c_cs.getPropertyValue('height'), 10);
+
+    canvas.width = c_w;
+    canvas.height = c_h;
+
     this.context = canvas.getContext('2d');
     if (!this.context) {
       return;
@@ -110,6 +116,10 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
       }
     }
   };
+
+  onDoubleClick() {
+    console.log('onDoubleClick event works!');
+  }
 
   onRangeChange = (event: Event): void => {
     if (!this.context) {

@@ -9,7 +9,6 @@ body {
 } */
 
 canvas {
-  margin: 30px 0px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 30px;
   background-color: white;
@@ -206,10 +205,6 @@ hr {
 html,
 body {
   min-width: 320px;
-  position: fixed;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
 }
 
 #pc_header,
@@ -226,7 +221,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(to bottom, #8a2dc4, rgb(222, 71, 93));
+  background-color: #8a2dc4;
 }
 
 #pc_header {
@@ -239,7 +234,7 @@ body {
 }
 
 @media screen and (max-width: 1280px) {
-  .pc #wrapper {
+  .pc #contentWrapper {
     width: 1280px;
     margin: 0 auto;
   }
@@ -253,7 +248,7 @@ header img {
 
 #mainWrapper {
   width: 100vw;
-  height: 100vh;
+  background: #f2f2f2;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; /* enables “momentum” (smooth) scrolling */
   margin: 0 auto;
@@ -276,8 +271,12 @@ header img {
 }
 
 .pc #mainWrapper {
-  width: 1280px;
   margin-top: 80px;
+}
+
+#contentWrapper {
+  min-height: 1300px;
+  text-align: center;
 }
 
 .header_profile_wrapper {
@@ -319,4 +318,37 @@ header img {
 
 .pc .title > .icon_hanger {
   font-size: 2.5rem;
+}
+
+.icon_wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 1px solid #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 2px #d4d4d4;
+  background-color: white;
+}
+
+.icon_draw {
+  font-size: 30px;
+  color: rgb(147, 147, 147);
+}
+
+.canvas_wrapper {
+  position: relative;
+  width: 90%;
+  padding-bottom: 90%;
+  margin: 24px auto;
+}
+
+.pc .canvas_wrapper {
+  width: 500px;
+  height: 500px;
+  padding: 0;
 }

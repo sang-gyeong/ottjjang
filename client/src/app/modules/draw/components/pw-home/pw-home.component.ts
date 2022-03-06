@@ -1,10 +1,11 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject, map, tap} from 'rxjs';
 import * as AWS from 'aws-sdk';
 import {environment} from 'src/environments/environment';
 import {BackgroundColors} from '../../consts';
 import * as fromRoot from '../../../../reducers/main.reducer';
 import {Store} from '@ngrx/store';
+import {reject} from 'lodash';
 
 const MAX_KEYS = 300;
 const OBJECT_STORE_HEADER = 'https://summber-obj.kr.object.ncloudstorage.com/';
@@ -15,6 +16,32 @@ const END_POINT = 'https://kr.object.ncloudstorage.com';
   styleUrls: ['./pw-home.component.css'],
 })
 export class PwHomeComponent implements OnInit, AfterViewInit {
+  @HostListener('mousemove', ['$event'])
+  mouseMoveEvent(event: MouseEvent & TouchEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const targetEl = event.target as HTMLElement;
+    if (targetEl.nodeName !== 'CANVAS') {
+      return;
+    }
+
+    this.onMouseMove(event);
+  }
+
+  @HostListener('touchmove', ['$event'])
+  touchMoveEvent(event: MouseEvent & TouchEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const targetEl = event.target as HTMLElement;
+    if (targetEl.nodeName !== 'CANVAS') {
+      return;
+    }
+
+    this.onMouseMove(event);
+  }
+
   @ViewChild('canvas')
   canvas?: ElementRef<HTMLCanvasElement>;
 
@@ -62,15 +89,17 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     this.context.fillStyle = 'transparent';
     this.context.fillRect(0, 0, canvas.width, canvas.height);
     this.context.strokeStyle = '#000000'; // black
-    this.canvas.nativeElement.addEventListener('mousemove', this.onMouseMove, false);
   }
 
-  onMouseMove = (event: MouseEvent): void => {
+  onMouseMove = (event: MouseEvent & TouchEvent): void => {
     if (!this.context) {
       return;
     }
-    this.x = event.offsetX;
-    this.y = event.offsetY;
+
+    const rect = (event.target as HTMLElement).getBoundingClientRect();
+    this.x = event.offsetX ?? event.touches[0].clientX - rect.left;
+    this.y = event.offsetY ?? event.touches[0].clientY - rect.top;
+
     if (!this.filling$.value) {
       if (!this.painting$.value) {
         this.context.beginPath();
@@ -122,10 +151,20 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   };
 
   startPainting = () => {
+    const wrapperEl = document.getElementById('mainWrapper');
+    if (wrapperEl) {
+      wrapperEl.style.overflowY = 'hidden';
+    }
+
     this.painting$.next(true);
   };
 
   stopPainting = () => {
+    const wrapperEl = document.getElementById('mainWrapper');
+    if (wrapperEl) {
+      wrapperEl.style.overflowY = 'scroll';
+    }
+
     this.painting$.next(false);
   };
 

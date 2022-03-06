@@ -40,6 +40,8 @@
     (mousedown)="startPainting()"
     (mouseup)="stopPainting()"
     (mouseleave)="stopPainting()"
+    (touchstart)="startPainting()"
+    (touchend)="stopPainting()"
     (click)="onCanvasClick()"
     #canvas
   ></canvas>

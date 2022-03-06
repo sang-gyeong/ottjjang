@@ -28,6 +28,7 @@
     "ngrx-etc": "^7.0.1",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
+    "ua-parser-js": "^0.7.31",
     "util": "^0.12.4",
     "zone.js": "~0.11.4"
   },
@@ -38,6 +39,7 @@
     "@types/jasmine": "~3.10.0",
     "@types/lodash": "^4.14.179",
     "@types/node": "^12.20.45",
+    "@types/ua-parser-js": "^0.7.36",
     "i": "^0.3.7",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",

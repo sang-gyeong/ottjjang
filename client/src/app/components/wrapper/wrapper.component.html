@@ -1,6 +1,9 @@
-<div>
+<div id="mainWrapper">
   <header>
-    <app-header></app-header>
+    <app-pc-header *ngIf="isDesktop; else isMobileOrTablet"></app-pc-header>
+    <ng-template #isMobileOrTablet>
+      <app-header></app-header>
+    </ng-template>
   </header>
   <main>
     <article>

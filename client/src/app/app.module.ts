@@ -12,9 +12,10 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {HttpInterceptorService} from './services/httpInterceptor.service';
 import * as fromRoot from './reducers/main.reducer';
 import {MainGuard} from './guards/main.guard';
+import {PcHeaderComponent} from './components/header/pc-header/pc-header.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, FooterComponent, WrapperComponent],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, WrapperComponent, PcHeaderComponent],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -23,7 +24,12 @@ import {MainGuard} from './guards/main.guard';
       main: fromRoot.reducer,
     }),
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}, {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptorService, multi: true}, LoginService, MainGuard],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptorService, multi: true},
+    LoginService,
+    MainGuard,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

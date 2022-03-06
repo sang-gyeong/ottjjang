@@ -1,6 +1,6 @@
 <a href="/home">home</a>
 
-<div class="flicking-viewport" style="display: block; width: 800px">
+<div class="flicking-viewport" style="display: block; width: 100%">
   <div
     *ngFor="let c of contents"
     style="display: inline-block; width: 100px; height: 100px"
@@ -13,11 +13,11 @@
   </div>
 </div>
 
-<div style="position: relative; width: 400px; height: 400px; margin-bottom: 100px">
+<div style="position: relative; width: 300px; height: 300px; margin-bottom: 100px">
   <div
     style="
-      width: 400px;
-      height: 400px;
+      width: 80%;
+      height: 200px;
       z-index: 1000;
       position: absolute;
       top: 0px;
@@ -28,8 +28,8 @@
     [style.background]="'url(' + header + currentKey + ')'"
   ></div>
   <canvas
-    width="400"
-    height="400"
+    width="300"
+    height="300"
     style="
       background: url(../../../../../assets/background.png);
       position: absolute;

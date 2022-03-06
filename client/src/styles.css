@@ -1,15 +1,12 @@
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
+@charset "UTF-8"; /* reset */
 
+/* 
 body {
   background-color: #f6f9fc;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 canvas {
   margin: 30px 0px;
@@ -58,4 +55,288 @@ button:active {
 
 button:focus {
   outline: none;
+}
+
+/* 2021-07-09 추가 */
+/* 2021-07-29-v3 수정 */
+@font-face {
+  font-family: 'KakaoBig';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Kakao Big ExtraBold'), local('KakaoBig-ExtraBold');
+  src: url(https://gift-s.kakaocdn.net/dn/gift/fonts/KakaoBig-ExtraBold.woff) format('woff'),
+    url(https://gift-s.kakaocdn.net/dn/gift/fonts/KakaoBig-ExtraBold.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'NotoSerifKR';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif KR'), local('NotoSerifKR');
+  src: url(https://gift-s.kakaocdn.net/dn/gift/fonts/NotoSerifKR-Regular.woff) format('woff'),
+    url(https://gift-s.kakaocdn.net/dn/gift/fonts/NotoSerifKR-Regular.woff2) format('woff2'),
+    url(https://gift-s.kakaocdn.net/dn/gift/fonts/NotoSerifKR-Regular.otf) format('opentype');
+}
+/* 2021-11- 29 추가 */
+@font-face {
+  font-family: 'ArialUnicodeMs';
+  font-style: normal;
+  font-weight: normal;
+  src: local('ArialUnicodeMs'), local('arial-unicode-ms');
+  src: url(https://st.kakaocdn.net/commerce_ui/static/fonts/aria-unicode-ms/arial-unicode-ms.woff) format('woff'),
+    url(https://st.kakaocdn.net/commerce_ui/static/fonts/aria-unicode-ms/arial-unicode-ms.woff2) format('woff2');
+}
+/* 2022-02-16 추가 */
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+textarea,
+p,
+blockquote,
+th,
+td,
+input,
+select,
+button {
+  margin: 0;
+  padding: 0;
+}
+fieldset,
+img {
+  border: 0 none;
+  vertical-align: top;
+}
+dl,
+ul,
+ol,
+menu,
+li {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+input,
+select,
+textarea,
+button {
+  vertical-align: middle;
+  font-size: 100%;
+}
+button {
+  border: 0 none;
+  background-color: transparent;
+  cursor: pointer;
+}
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+body {
+  -webkit-text-size-adjust: none;
+}
+input:checked[type='checkbox'] {
+  background-color: #666;
+  -webkit-appearance: checkbox;
+}
+input[type='text'],
+input[type='number'],
+input[type='password'],
+input[type='submit'],
+input[type='search'],
+input[type='tel'],
+input[type='email'],
+html input[type='button'],
+input[type='reset'] {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+/* 2020-02-12 수정 */
+input[type='search']::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+body {
+  background: #fff;
+}
+body,
+th,
+td,
+input,
+select,
+textarea,
+button {
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: -apple-system, 'Apple SD Gothic Neo', sans-serif, 'ArialUnicodeMs';
+  color: #000;
+}
+/* 2022-02-16 수정 */
+.pc body,
+.pc th,
+.pc td,
+.pc input,
+.pc select,
+.pc textarea,
+.pc button {
+  font-family: -apple-system, 'Apple SD Gothic Neo', '맑은 고딕', 'Malgun Gothic', sans-serif, 'ArialUnicodeMs';
+}
+/* 2022-02-16 수정 */
+/* 2020-12-09 추가 */
+a {
+  color: #000;
+  text-decoration: none;
+}
+a:active,
+a:hover,
+a:visited {
+  text-decoration: none;
+}
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+var {
+  font-style: normal;
+  font-weight: normal;
+}
+hr {
+  display: none;
+}
+/* global **/
+html,
+body {
+  min-width: 320px;
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+#pc_header,
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  width: 100%;
+  min-width: 320px;
+  height: 50px;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(45deg, rgb(174, 33, 160), rgb(55, 148, 207));
+}
+
+#pc_header {
+  height: 80px;
+}
+
+#wrapper {
+  position: relative;
+  min-height: 100%;
+}
+
+@media screen and (max-width: 1280px) {
+  .pc #wrapper {
+    width: 1280px;
+    margin: 0 auto;
+  }
+}
+
+header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+#mainWrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; /* enables “momentum” (smooth) scrolling */
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+.pc #mainWrapper {
+  width: 1280px;
+  margin-top: 80px;
+}
+
+.pc_head {
+  width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon_hanger {
+  font-size: 2rem;
+  padding: 0 10px;
+  color: white;
+}
+
+.pc .icon_hanger {
+  font-size: 2.5rem;
+}
+
+@media screen and (max-width: 1280px) {
+  .pc #wrapper {
+    width: 1280px;
+    margin: 0 auto;
+  }
+}
+
+.header_profile_wrapper {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 10px;
+}
+
+.txt_nickname {
+  min-width: 70px;
+  max-width: 90px;
+  padding: 0 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pc .txt_nickname {
+  max-width: 120px;
 }

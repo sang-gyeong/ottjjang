@@ -57,35 +57,6 @@ button:focus {
   outline: none;
 }
 
-/* 2021-07-09 추가 */
-/* 2021-07-29-v3 수정 */
-@font-face {
-  font-family: 'KakaoBig';
-  font-style: normal;
-  font-weight: 800;
-  src: local('Kakao Big ExtraBold'), local('KakaoBig-ExtraBold');
-  src: url(https://gift-s.kakaocdn.net/dn/gift/fonts/KakaoBig-ExtraBold.woff) format('woff'),
-    url(https://gift-s.kakaocdn.net/dn/gift/fonts/KakaoBig-ExtraBold.woff2) format('woff2');
-}
-@font-face {
-  font-family: 'NotoSerifKR';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Noto Serif KR'), local('NotoSerifKR');
-  src: url(https://gift-s.kakaocdn.net/dn/gift/fonts/NotoSerifKR-Regular.woff) format('woff'),
-    url(https://gift-s.kakaocdn.net/dn/gift/fonts/NotoSerifKR-Regular.woff2) format('woff2'),
-    url(https://gift-s.kakaocdn.net/dn/gift/fonts/NotoSerifKR-Regular.otf) format('opentype');
-}
-/* 2021-11- 29 추가 */
-@font-face {
-  font-family: 'ArialUnicodeMs';
-  font-style: normal;
-  font-weight: normal;
-  src: local('ArialUnicodeMs'), local('arial-unicode-ms');
-  src: url(https://st.kakaocdn.net/commerce_ui/static/fonts/aria-unicode-ms/arial-unicode-ms.woff) format('woff'),
-    url(https://st.kakaocdn.net/commerce_ui/static/fonts/aria-unicode-ms/arial-unicode-ms.woff2) format('woff2');
-}
-/* 2022-02-16 추가 */
 body,
 div,
 dl,
@@ -255,7 +226,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(45deg, rgb(174, 33, 160), rgb(55, 148, 207));
+  background: linear-gradient(to bottom, #8a2dc4, rgb(222, 71, 93));
 }
 
 #pc_header {
@@ -289,11 +260,6 @@ header img {
   margin-top: 50px;
 }
 
-.pc #mainWrapper {
-  width: 1280px;
-  margin-top: 80px;
-}
-
 .pc_head {
   width: 1280px;
   height: 100%;
@@ -305,19 +271,13 @@ header img {
 
 .icon_hanger {
   font-size: 2rem;
-  padding: 0 10px;
+  padding: 0 4px 0 10px;
   color: white;
 }
 
-.pc .icon_hanger {
-  font-size: 2.5rem;
-}
-
-@media screen and (max-width: 1280px) {
-  .pc #wrapper {
-    width: 1280px;
-    margin: 0 auto;
-  }
+.pc #mainWrapper {
+  width: 1280px;
+  margin-top: 80px;
 }
 
 .header_profile_wrapper {
@@ -339,4 +299,24 @@ header img {
 
 .pc .txt_nickname {
   max-width: 120px;
+}
+
+.title {
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.title > h1 {
+  font-size: 1.2rem;
+  padding-top: 5px;
+}
+
+.pc .title > h1 {
+  font-size: 1.6rem;
+}
+
+.pc .title > .icon_hanger {
+  font-size: 2.5rem;
 }

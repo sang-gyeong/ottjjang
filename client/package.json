@@ -4,7 +4,7 @@
   "scripts": {
     "build": "ng build",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "pm2 start start.sh --name ottjjang-client",
     "lint": "ng lint",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

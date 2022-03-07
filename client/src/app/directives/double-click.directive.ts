@@ -11,11 +11,11 @@ export class DoubleClickDirective {
   doubleClick = new EventEmitter<MouseEvent>();
 
   @HostListener('click', ['$event'])
-  onClick(): void {
+  onClick($event: MouseEvent): void {
     const now = Date.now();
 
     if (now - this.lastTap < this.delay) {
-      this.doubleClick.emit();
+      this.doubleClick.emit($event);
     } else {
       this.lastTap = now;
     }

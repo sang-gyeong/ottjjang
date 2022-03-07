@@ -1,27 +1,14 @@
 <div class="canvas_wrapper">
-  <div
-    style="width: 100%; height: 100%; z-index: 1000; position: absolute; top: 0; left: 0; pointer-events: none"
-    [style.background]="'url(' + header + currentKey + ')' + ' center/contain'"
-  ></div>
+  <div *ngFor="let clothes of selectedClothesList">
+    <div class="clothes_item" [style.background]="'url(' + header + clothes + ')' + ' center/contain'"></div>
+  </div>
   <canvas
-    style="
-      background: url(../../../../../assets/background.png);
-      pointer-events: auto;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-position: center;
-      background-size: contain;
-    "
     (mousedown)="startPainting()"
     (mouseup)="stopPainting()"
     (mouseleave)="stopPainting()"
     (touchstart)="startPainting()"
     (touchend)="stopPainting()"
     (click)="onCanvasClick()"
-    (cuDoubleClick)="onDoubleClick()"
     #canvas
   ></canvas>
 </div>
@@ -45,17 +32,28 @@
   <div
     *ngFor="let c of contents"
     style="display: inline-block; width: 100px; height: 100px"
-    (click)="currentKey = c.Key"
+    (cuLongClick)="onLongClick()"
+    (cuDoubleClick)="onDoubleClick($event)"
   >
-    <img
-      style="
-        width: 80px;
-        height: 80px;
-        box-shadow: 3px 2px 2px rgb(197, 197, 197);
-        border-radius: 4px;
-        background-color: white;
-      "
-      [src]="header + c.Key"
+    <input
+      type="checkbox"
+      [id]="c.Key"
+      [name]="c.Key"
+      style="display: none"
+      [value]="c.Key"
+      (change)="onChange($event)"
     />
+    <label [for]="c.Key">
+      <img
+        style="
+          width: 80px;
+          height: 80px;
+          box-shadow: 3px 2px 2px rgb(197, 197, 197);
+          border-radius: 4px;
+          background-color: white;
+        "
+        [src]="header + c.Key"
+      />
+    </label>
   </div>
 </div>

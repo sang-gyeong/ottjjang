@@ -5,6 +5,7 @@ import {environment} from 'src/environments/environment';
 import {BackgroundColors} from '../../consts';
 import * as fromRoot from '../../../../reducers/main.reducer';
 import {Store} from '@ngrx/store';
+import {ChangedEvent} from '@egjs/ngx-flicking';
 
 const MAX_KEYS = 300;
 const OBJECT_STORE_HEADER = 'https://summber-obj.kr.object.ncloudstorage.com/';
@@ -17,8 +18,10 @@ const END_POINT = 'https://kr.object.ncloudstorage.com';
 export class PwHomeComponent implements OnInit, AfterViewInit {
   @HostListener('mousemove', ['$event'])
   mouseMoveEvent(event: MouseEvent & TouchEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event.cancelable) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
     const targetEl = event.target as HTMLElement;
     if (targetEl.nodeName !== 'CANVAS') {
@@ -30,8 +33,10 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
 
   @HostListener('touchmove', ['$event'])
   touchMoveEvent(event: MouseEvent & TouchEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event.cancelable) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
     const targetEl = event.target as HTMLElement;
     if (targetEl.nodeName !== 'CANVAS') {
@@ -53,6 +58,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   currentKey = '';
   header = OBJECT_STORE_HEADER;
   contents: any[] = [];
+  selectedClothesList: string[] = [];
 
   private kakaoId = NaN;
   private selectUserKakaoId$ = this.store$.select(fromRoot.selectUser).pipe(map(user => user?.kakaoId ?? NaN));
@@ -117,8 +123,27 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     }
   };
 
-  onDoubleClick() {
-    console.log('onDoubleClick event works!');
+  onChange($event: Event): void {
+    const target = $event.target as HTMLInputElement;
+    const {value, checked} = target;
+
+    if (checked) {
+      this.selectedClothesList.push(value);
+    } else {
+      this.selectedClothesList = this.selectedClothesList.filter(clothes => clothes !== value);
+    }
+  }
+
+  onLongClick(): void {
+    console.log('longCLick');
+  }
+
+  onDoubleClick($event: MouseEvent) {
+    const value = ($event.target as HTMLInputElement).value;
+
+    this.bucket.deleteObject({Bucket: environment.bucket_name, Key: value}, () => {
+      this.getDatas();
+    });
   }
 
   onRangeChange = (event: Event): void => {

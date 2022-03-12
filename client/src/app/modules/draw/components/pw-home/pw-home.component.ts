@@ -17,14 +17,15 @@ const END_POINT = 'https://kr.object.ncloudstorage.com';
 export class PwHomeComponent implements OnInit, AfterViewInit {
   @HostListener('mousemove', ['$event'])
   mouseMoveEvent(event: MouseEvent & TouchEvent): void {
+    const targetEl = event.target as HTMLElement;
+
+    if (targetEl.nodeName !== 'CANVAS') {
+      return;
+    }
+
     if (event.cancelable) {
       event.preventDefault();
       event.stopPropagation();
-    }
-
-    const targetEl = event.target as HTMLElement;
-    if (targetEl.nodeName !== 'CANVAS') {
-      return;
     }
 
     this.onMouseMove(event);
@@ -32,14 +33,14 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
 
   @HostListener('touchmove', ['$event'])
   touchMoveEvent(event: MouseEvent & TouchEvent): void {
-    if (event.cancelable) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
     const targetEl = event.target as HTMLElement;
     if (targetEl.nodeName !== 'CANVAS') {
       return;
+    }
+
+    if (event.cancelable) {
+      event.preventDefault();
+      event.stopPropagation();
     }
 
     this.onMouseMove(event);
@@ -146,7 +147,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
       return;
     }
     const value = (event.target as HTMLInputElement).value;
-    this.context.lineWidth = parseInt(value);
+    this.context.lineWidth = parseFloat(value);
   };
 
   onColorClick = (event: Event): void => {

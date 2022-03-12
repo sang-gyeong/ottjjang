@@ -197,6 +197,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     }
 
     this.painting$.next(false);
+    this.context?.beginPath();
   };
 
   startFilling = () => {

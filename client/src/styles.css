@@ -16,24 +16,20 @@ canvas {
 }
 
 .color {
-  height: 50px;
-  width: 50px;
+  height: 30px;
+  width: 30px;
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 25px;
 }
 
 .colors {
-  display: flex;
+  display: inline-flex;
 }
 
-.controls,
-.colors {
-  margin-top: 50px;
-}
-
-.color {
-  margin-bottom: 30px;
+.controls {
+  width: 250px;
+  margin: 30px auto;
 }
 
 button {
@@ -276,7 +272,7 @@ header img {
 }
 
 #contentWrapper {
-  min-height: 1300px;
+  min-height: 100vh;
   text-align: center;
 }
 
@@ -343,8 +339,8 @@ header img {
 
 .canvas_wrapper {
   position: relative;
-  width: 90%;
-  padding-bottom: 90%;
+  width: 88%;
+  padding-bottom: 88%;
   margin: 24px auto;
 }
 

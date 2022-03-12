@@ -134,8 +134,12 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onLongPress(event: Event): void {
-    console.log('onLongPress!!', event);
+  onLongPress(value: string): void {
+    if (window.confirm('선택한 아이템을 삭제하시겠습니까?')) {
+      this.bucket.deleteObject({Bucket: environment.bucket_name, Key: value}, () => {
+        this.getDatas();
+      });
+    }
   }
 
   onRangeChange = (event: Event): void => {

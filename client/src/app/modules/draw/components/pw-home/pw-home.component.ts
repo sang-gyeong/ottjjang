@@ -5,7 +5,6 @@ import {environment} from 'src/environments/environment';
 import {BackgroundColors} from '../../consts';
 import * as fromRoot from '../../../../reducers/main.reducer';
 import {Store} from '@ngrx/store';
-import {ChangedEvent} from '@egjs/ngx-flicking';
 
 const MAX_KEYS = 300;
 const OBJECT_STORE_HEADER = 'https://summber-obj.kr.object.ncloudstorage.com/';

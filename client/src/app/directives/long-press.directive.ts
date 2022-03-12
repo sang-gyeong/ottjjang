@@ -16,7 +16,6 @@ export class LongPressDirective {
   }
 
   @HostListener('mousedown') mousedown(): void {
-    console.log('mousedown');
     this.touchTimeout = setTimeout(() => {
       this.longPress.emit();
     }, 2000);
@@ -27,7 +26,6 @@ export class LongPressDirective {
   }
 
   @HostListener('mouseup') mouseup(): void {
-    console.log('mouseUp');
     this.touchEnd();
   }
 

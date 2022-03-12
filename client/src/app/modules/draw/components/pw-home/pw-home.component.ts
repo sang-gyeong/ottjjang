@@ -230,7 +230,10 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     this.bucket.upload(params, {}, (err, data) => {
       const message = err ? 'ERROR!' : 'UPLOADED';
       alert(message);
+
       this.getDatas();
+      this.selectedClothesList.push(data.Key);
+      this.onCanvasClear();
     });
   }
 
@@ -241,6 +244,12 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
       array.push(binary.charCodeAt(i));
     }
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
+  }
+
+  isChecked(value: string): boolean {
+    const a = this.selectedClothesList.find(key => key === value);
+    console.log(a);
+    return !!a;
   }
 
   getDatas() {

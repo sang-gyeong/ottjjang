@@ -54,6 +54,7 @@
           background-color: white;
         "
         [src]="header + c.Key"
+        (touchstart)="$event.preventDefault()"
       />
     </label>
   </div>

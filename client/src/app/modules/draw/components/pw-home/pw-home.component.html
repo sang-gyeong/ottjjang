@@ -32,8 +32,8 @@
   <div
     *ngFor="let c of contents"
     style="display: inline-block; width: 100px; height: 100px"
-    (cuLongClick)="onLongClick()"
-    (cuDoubleClick)="onDoubleClick($event)"
+    (longPress)="onLongPress($event)"
+    longPress
   >
     <input
       type="checkbox"

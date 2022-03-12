@@ -134,16 +134,8 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onLongClick(): void {
-    console.log('longCLick');
-  }
-
-  onDoubleClick($event: MouseEvent) {
-    const value = ($event.target as HTMLInputElement).value;
-
-    this.bucket.deleteObject({Bucket: environment.bucket_name, Key: value}, () => {
-      this.getDatas();
-    });
+  onLongPress(event: Event): void {
+    console.log('onLongPress!!', event);
   }
 
   onRangeChange = (event: Event): void => {

@@ -24,8 +24,9 @@
     *ngFor="let color of backgroundColors"
     class="color"
     [style.backgroundColor]="color"
-    (click)="onColorClick($event)"
+    (click)="setCurrentColor($event)"
   ></div>
+  <input type="color" class="color" (input)="setCurrentColor($event)" />
 </div>
 
 <div class="flicking-viewport" style="display: block; width: 100%; padding: 12px">
@@ -42,7 +43,6 @@
       style="display: none"
       [value]="c.Key"
       (change)="onChange($event)"
-      [checked]="isChecked(input.value)"
       #input
     />
     <label [for]="c.Key" style="display: inline-block; width: 100%; height: 100%; pointer-events: all" #label>

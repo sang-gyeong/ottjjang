@@ -141,6 +141,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     if (window.confirm('선택한 아이템을 삭제하시겠습니까?')) {
       this.bucket.deleteObject({Bucket: environment.bucket_name, Key: value}, () => {
         this.getDatas();
+        this.selectedClothesList = this.selectedClothesList.filter(clothes => clothes !== value);
       });
     }
   }
@@ -153,12 +154,20 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     this.context.lineWidth = parseFloat(value);
   };
 
-  onColorClick = (event: Event): void => {
+  setCurrentColor = (event: Event): void => {
     if (!this.context) {
       return;
     }
-    const style = (event.target as HTMLElement).style;
-    this.context.strokeStyle = style.backgroundColor;
+
+    let color;
+
+    if (event.type === 'click') {
+      color = (event.target as HTMLElement).style.backgroundColor;
+    } else {
+      color = (event.target as HTMLInputElement).value;
+    }
+
+    this.context.strokeStyle = color;
   };
 
   onCanvasClear = () => {
@@ -244,12 +253,6 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
       array.push(binary.charCodeAt(i));
     }
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
-  }
-
-  isChecked(value: string): boolean {
-    const a = this.selectedClothesList.find(key => key === value);
-    console.log(a);
-    return !!a;
   }
 
   getDatas() {

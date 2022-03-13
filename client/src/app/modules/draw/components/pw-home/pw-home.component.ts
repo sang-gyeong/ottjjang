@@ -5,6 +5,7 @@ import {environment} from 'src/environments/environment';
 import {BackgroundColors} from '../../consts';
 import * as fromRoot from '../../../../reducers/main.reducer';
 import {Store} from '@ngrx/store';
+import {forEach} from 'lodash';
 
 const MAX_KEYS = 300;
 const OBJECT_STORE_HEADER = 'https://summber-obj.kr.object.ncloudstorage.com/';
@@ -49,8 +50,9 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas')
   canvas?: ElementRef<HTMLCanvasElement>;
 
-  painting$ = new BehaviorSubject<boolean>(false);
+  painting$ = new BehaviorSubject<boolean>(true);
   filling$ = new BehaviorSubject<boolean>(false);
+  currentColor$ = new BehaviorSubject<string>('#000000');
 
   context?: CanvasRenderingContext2D | null;
   x = 0;
@@ -168,6 +170,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     }
 
     this.context.strokeStyle = color;
+    this.currentColor$.next(color);
   };
 
   onCanvasClear = () => {
@@ -220,14 +223,14 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     this.filling$.next(false);
   };
 
-  uploadCanvasToServer() {
+  private uploadCanvasToServer() {
     if (!this.canvas) {
       return;
     }
     const canvas = this.canvas.nativeElement;
     const dataUrl = canvas.toDataURL('image/png');
     const blobData = this.dataURItoBlob(dataUrl);
-    const fileName = `${this.kakaoId}/${Math.random() * 100}.png`;
+    const fileName = `${this.kakaoId}/${Date.now()}.png`;
     const params: AWS.S3.PutObjectRequest = {
       Bucket: environment.bucket_name,
       Key: fileName,
@@ -246,7 +249,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  dataURItoBlob(dataURI: any) {
+  private dataURItoBlob(dataURI: any) {
     const binary = atob(dataURI.split(',')[1]);
     const array = [];
     for (var i = 0; i < binary.length; i++) {
@@ -255,7 +258,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
   }
 
-  getDatas() {
+  private getDatas() {
     const params: AWS.S3.ListObjectsV2Request = {
       Bucket: environment.bucket_name,
       MaxKeys: MAX_KEYS,

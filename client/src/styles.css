@@ -368,3 +368,10 @@ label {
   left: 0;
   pointer-events: none;
 }
+
+.color-status {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: inline-block;
+}

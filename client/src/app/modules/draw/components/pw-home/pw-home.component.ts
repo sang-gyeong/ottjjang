@@ -50,7 +50,7 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas')
   canvas?: ElementRef<HTMLCanvasElement>;
 
-  painting$ = new BehaviorSubject<boolean>(true);
+  painting$ = new BehaviorSubject<boolean>(false);
   filling$ = new BehaviorSubject<boolean>(false);
   currentColor$ = new BehaviorSubject<string>('#000000');
 

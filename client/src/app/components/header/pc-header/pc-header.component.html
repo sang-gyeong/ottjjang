@@ -1,12 +1,11 @@
 <div *ngIf="vm$ | async as vm" id="pc_header">
   <div class="pc_head">
     <a href="/home" class="title">
-      <span class="material-icons icon_hanger"> checkroom </span>
-      <h1>OT</h1>
+      <img src="assets/logo.png" alt="logo" class="logo_img" />
     </a>
     <div class="header_profile_wrapper">
       <p class="txt_nickname">{{ vm.nickname }}</p>
-      <img *ngIf="vm.profileURL.length; else noUser" [src]="vm.profileURL" alt="userProfileURL" />
+      <img *ngIf="vm.profileURL.length; else noUser" [src]="vm.profileURL" alt="userProfileURL" class="profile_img" />
       <ng-template #noUser>
         <p (click)="onClickLogin()">로그인 해주세요</p>
       </ng-template>

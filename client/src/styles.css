@@ -213,12 +213,12 @@ body {
   z-index: 10000;
   width: 100%;
   min-width: 320px;
-  height: 50px;
+  height: 55px;
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #8a2dc4;
+  background-color: white;
 }
 
 #pc_header {
@@ -237,10 +237,18 @@ body {
   }
 }
 
-header img {
-  width: 40px;
-  height: 40px;
+header .profile_img {
+  width: 37px;
+  height: 37px;
   border-radius: 50%;
+}
+
+#header > * {
+  margin: 0 16px;
+}
+
+header .logo_img {
+  width: 135px;
 }
 
 #mainWrapper {
@@ -274,14 +282,6 @@ header img {
 #contentWrapper {
   min-height: 100vh;
   text-align: center;
-}
-
-.header_profile_wrapper {
-  width: 70%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 10px;
 }
 
 .txt_nickname {

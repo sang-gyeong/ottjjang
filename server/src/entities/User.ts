@@ -14,8 +14,7 @@ import Album from "./Album";
 import Track from "./Track";
 import Playlist from "./Playlist";
 import Subscribe from "./Subscribe";
-
-// export type UserGenderType = 'F' | 'M' | 'U';
+import Clothes from "./Clothes";
 
 @Entity()
 export default class User extends BaseEntity {
@@ -30,16 +29,6 @@ export default class User extends BaseEntity {
 
   @Column()
   profileURL!: string;
-
-  // @Column({
-  //   type: 'enum',
-  //   enum: ['F', 'M', 'U'],
-  //   default: 'U',
-  // })
-  // gender!: UserGenderType;
-
-  // @Column()
-  // age!: string;
 
   @CreateDateColumn()
   createDate!: Date;
@@ -60,6 +49,18 @@ export default class User extends BaseEntity {
   @ManyToMany(() => Artist, (artist) => artist.users, { onDelete: "CASCADE" })
   @JoinTable({ name: "UserArtist" })
   artists!: Artist[];
+
+  @ManyToMany(() => Clothes, (clothes) => clothes.users, {
+    onDelete: "CASCADE",
+  })
+  @JoinTable({ name: "UserClothes" })
+  clothes!: Clothes[];
+
+  @ManyToMany(() => Clothes, (clothes) => clothes.users, {
+    onDelete: "CASCADE",
+  })
+  @JoinTable({ name: "UserSelectedClothes" })
+  selectedClothes!: Clothes[];
 
   @ManyToMany(() => Album, (album) => album.users, { onDelete: "CASCADE" })
   @JoinTable({ name: "UserAlbum" })

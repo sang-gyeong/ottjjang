@@ -12,7 +12,7 @@ export class LongPressDirective {
   @HostListener('touchstart') touchstart(): void {
     this.touchTimeout = setTimeout(() => {
       this.longPress.emit();
-    }, 1200);
+    }, 2000);
   }
 
   @HostListener('mousedown') mousedown(): void {

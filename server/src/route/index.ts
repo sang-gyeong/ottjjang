@@ -8,6 +8,7 @@ import libraryRoute from "./library";
 import trackRoute from "./track";
 import albumRoute from "./album";
 import artistRoute from "./artist";
+import clothesRoute from "./clothes";
 import magRoute from "./mag";
 import playlistRoute from "./playlist";
 import {
@@ -26,6 +27,7 @@ route.use("/library", authenticateWithJwt, libraryRoute);
 route.use("/track", trackRoute);
 route.use("/album", albumRoute);
 route.use("/artist", artistRoute);
+route.use("/clothes", authenticateWithJwt, clothesRoute);
 route.use("/main", authenticateWithJwt, magRoute);
 route.use("/playlist", playlistRoute);
 

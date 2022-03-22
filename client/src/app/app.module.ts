@@ -10,9 +10,13 @@ import {WrapperComponent} from './components/wrapper/wrapper.component';
 import {LoginService} from './services/login.service';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {HttpInterceptorService} from './services/httpInterceptor.service';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import * as fromRoot from './reducers/main.reducer';
 import {MainGuard} from './guards/main.guard';
 import {PcHeaderComponent} from './components/header/pc-header/pc-header.component';
+import {EffectsModule} from '@ngrx/effects';
+import {environment} from 'src/environments/environment';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent, WrapperComponent, PcHeaderComponent],
@@ -20,9 +24,12 @@ import {PcHeaderComponent} from './components/header/pc-header/pc-header.compone
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    EffectsModule.forRoot([]),
     StoreModule.forRoot({
       main: fromRoot.reducer,
     }),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+    NgbModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true},

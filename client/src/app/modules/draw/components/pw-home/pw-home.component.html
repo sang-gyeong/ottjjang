@@ -1,7 +1,9 @@
 <div class="canvas_wrapper">
-  <div *ngFor="let clothes of selectedClothesList">
-    <div class="clothes_item" [style.background]="'url(' + header + clothes + ')' + ' center/contain'"></div>
-  </div>
+  <ng-container *ngIf="selectedClothesList$ | async as selectedClothesList">
+    <div *ngFor="let clothes of selectedClothesList">
+      <div class="clothes_item" [style.background]="'url(' + header + clothes + ')' + ' center/contain'"></div>
+    </div>
+  </ng-container>
   <canvas
     (mousedown)="startPainting()"
     (mouseup)="stopPainting()"
@@ -15,12 +17,12 @@
 <input type="range" id="js-line" min="0.1" max="5.0" step="any" value="2.5" (change)="onRangeChange($event)" />
 <div class="controls">
   <button id="js-fill" (click)="startFilling()" [ngStyle]="filling$.value ? {border: '2px solid #0080ff'} : {}">
-    Fill
+    그리기
   </button>
   <button id="js-draw" (click)="stopFilling()" [ngStyle]="!filling$.value ? {border: '2px solid #0080ff'} : {}">
-    Paint
+    채우기
   </button>
-  <button id="js-save" (click)="saveImage()">Save</button>
+  <button id="js-save" (click)="saveImage()">생성</button>
   <button (click)="onCanvasClear()">Clear</button>
   <span class="color-status" [style.background-color]="currentColor$.value"></span>
 </div>
@@ -34,23 +36,28 @@
   <input type="color" class="color" (input)="setCurrentColor($event)" />
 </div>
 
-<div class="flicking-viewport" style="display: block; width: 100%; padding: 12px 0">
+<div
+  *ngIf="clothesList$ | async as clothesList"
+  class="flicking-viewport"
+  style="display: block; width: 100%; padding: 12px 0"
+>
   <div
-    *ngFor="let c of contents"
+    *ngFor="let clothes of clothesList"
     style="display: inline-block; width: 100px; height: 100px"
-    (longPress)="onLongPress(input.value)"
+    (longPress)="onLongPress(clothes)"
     longPress
   >
     <input
       type="checkbox"
-      [id]="c.Key"
-      [name]="c.Key"
+      [id]="clothes.key"
+      [name]="clothes.key"
       style="display: none"
-      [value]="c.Key"
-      (change)="onChange($event)"
+      [value]="clothes.key"
+      [checked]="clothes.isSelected"
+      (click)="onClickClothes(clothes.key)"
       #input
     />
-    <label [for]="c.Key" style="display: inline-block; width: 100%; height: 100%; pointer-events: all" #label>
+    <label [for]="clothes.key" style="display: inline-block; width: 100%; height: 100%; pointer-events: all" #label>
       <img
         style="
           width: 80px;
@@ -59,9 +66,17 @@
           border-radius: 4px;
           background-color: white;
         "
-        [src]="header + c.Key"
+        [src]="header + clothes.key"
         (touchstart)="label.click(); $event.preventDefault()"
       />
     </label>
   </div>
+
+  <button
+    (click)="onClickSaveStatus(clothesList)"
+    style="padding: 6px 10px; background-color: rgb(112, 34, 161); color: white"
+  >
+    현재상태 저장하기
+  </button>
+  <!-- <button (click)="onClickShare()">내보내기</button> -->
 </div>

@@ -31,6 +31,7 @@ const mainReducer = createReducer(
 
 export const selectMain = createFeatureSelector<State>('main');
 export const selectUser = createSelector(selectMain, state => state.user);
+export const selectUserKakaoId = createSelector(selectMain, state => state.user?.kakaoId ?? NaN);
 
 export function reducer(state = initialState, action: Action): State {
   return mainReducer(state, action);

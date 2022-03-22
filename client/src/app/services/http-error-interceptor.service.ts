@@ -13,18 +13,14 @@ export enum CustomHttpError {
 
 @Injectable()
 export class HttpErrorInterceptorService implements HttpInterceptor {
-  constructor(
-    private router: Router,
-    private ls: LoginService,
-  ) {}
+  constructor(private router: Router, private ls: LoginService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     return next.handle(req).pipe(
       catchError(err => {
         const code = get(err, ['status', 'errorCode']);
 
-        console.log(code)
+        console.log('error : ', err);
 
         return throwError(err);
       })

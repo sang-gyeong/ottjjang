@@ -13,7 +13,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         Accept: 'application/json',
         Authorization: `${document.cookie.split('token=')[1]}`,
       },
-      responseType: 'json'
+      responseType: 'json',
     });
 
     return next.handle(request);

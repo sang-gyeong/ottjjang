@@ -1,15 +1,15 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, map, tap} from 'rxjs';
+import {BehaviorSubject, map} from 'rxjs';
+import {map as _map, filter} from 'lodash';
 import * as AWS from 'aws-sdk';
 import {environment} from 'src/environments/environment';
-import {BackgroundColors} from '../../consts';
+import {BackgroundColors, bucket, END_POINT, MAX_KEYS, OBJECT_STORE_HEADER} from '../../consts';
 import * as fromRoot from '../../../../reducers/main.reducer';
 import {Store} from '@ngrx/store';
-import {forEach} from 'lodash';
+import * as drawActions from '../../actions/draw.action';
+import * as drawReducer from '../../reducers/draw.reducer';
+import {DrawService} from '../../services/draw.service';
 
-const MAX_KEYS = 300;
-const OBJECT_STORE_HEADER = 'https://summber-obj.kr.object.ncloudstorage.com/';
-const END_POINT = 'https://kr.object.ncloudstorage.com';
 @Component({
   selector: 'app-pw-home',
   templateUrl: './pw-home.component.html',
@@ -59,28 +59,22 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
   y = 0;
   currentKey = '';
   header = OBJECT_STORE_HEADER;
-  contents: any[] = [];
-  selectedClothesList: string[] = [];
+  selectedClothesList$ = new BehaviorSubject<string[]>([]);
 
-  private kakaoId = NaN;
-  private selectUserKakaoId$ = this.store$.select(fromRoot.selectUser).pipe(map(user => user?.kakaoId ?? NaN));
+  clothesList$ = this.store$.select(drawReducer.selectClothesList);
 
   readonly backgroundColors = BackgroundColors;
-  readonly bucket = new AWS.S3({
-    endpoint: new AWS.Endpoint(END_POINT),
-    region: environment.region,
-    credentials: {
-      accessKeyId: environment.accessKeyId,
-      secretAccessKey: environment.secretAccessKey,
-    },
-  });
+  readonly bucket = bucket;
 
-  constructor(private store$: Store<fromRoot.State>) {
-    this.selectUserKakaoId$.subscribe(kakaoId => (this.kakaoId = kakaoId));
-  }
+  constructor(private store$: Store<fromRoot.State>, private drawService: DrawService) {}
 
   ngOnInit() {
-    this.getDatas();
+    this.store$.dispatch(drawActions.loadDrawContents());
+
+    this.clothesList$.subscribe(clothesList => {
+      const currentContents = filter(clothesList, clothes => clothes.isSelected);
+      this.selectedClothesList$.next(_map(currentContents, c => c.key));
+    });
   }
 
   ngAfterViewInit() {
@@ -125,28 +119,25 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     }
   };
 
-  onChange($event: Event): void {
-    const target = $event.target as HTMLInputElement;
-    const {value, checked} = target;
-
-    if (checked) {
-      this.selectedClothesList.push(value);
-    } else {
-      this.selectedClothesList = this.selectedClothesList.filter(clothes => clothes !== value);
-    }
+  onClickSaveStatus(clothesList: {key: string; isSelected: boolean}[]): void {
+    this.store$.dispatch(drawActions.saveStatus({data: clothesList}));
   }
 
-  onLongPress(value: string): void {
+  onClickClothes(key: string): void {
+    this.store$.dispatch(drawActions.toggleSelectedClothes({key}));
+  }
+
+  onLongPress(clothes: {key: string; id: number}): void {
+    const {key, id} = clothes;
     if (navigator.vibrate) {
       navigator.vibrate(2000);
     }
     if (window.confirm('선택한 아이템을 삭제하시겠습니까?')) {
-      this.bucket.deleteObject({Bucket: environment.bucket_name, Key: value}, () => {
-        this.getDatas();
-        this.selectedClothesList = this.selectedClothesList.filter(clothes => clothes !== value);
-      });
+      this.store$.dispatch(drawActions.deleteClothesItem({key, id}));
     }
   }
+
+  onClickShare = (): void => {};
 
   onRangeChange = (event: Event): void => {
     if (!this.context) {
@@ -223,62 +214,23 @@ export class PwHomeComponent implements OnInit, AfterViewInit {
     this.filling$.next(false);
   };
 
-  private uploadCanvasToServer() {
+  private uploadCanvasToServer(): void {
     if (!this.canvas) {
       return;
     }
     const canvas = this.canvas.nativeElement;
     const dataUrl = canvas.toDataURL('image/png');
     const blobData = this.dataURItoBlob(dataUrl);
-    const fileName = `${this.kakaoId}/${Date.now()}.png`;
-    const params: AWS.S3.PutObjectRequest = {
-      Bucket: environment.bucket_name,
-      Key: fileName,
-      Body: blobData,
-      ACL: 'public-read',
-      ContentType: 'image/png',
-    };
 
-    this.bucket.upload(params, {}, (err, data) => {
-      const message = err ? 'ERROR!' : 'UPLOADED';
-      alert(message);
-
-      this.getDatas();
-      this.selectedClothesList.push(data.Key);
-      this.onCanvasClear();
-    });
+    this.store$.dispatch(drawActions.saveClothesItem({blobData}));
   }
 
-  private dataURItoBlob(dataURI: any) {
+  private dataURItoBlob(dataURI: any): Blob {
     const binary = atob(dataURI.split(',')[1]);
     const array = [];
     for (var i = 0; i < binary.length; i++) {
       array.push(binary.charCodeAt(i));
     }
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
-  }
-
-  private getDatas() {
-    const params: AWS.S3.ListObjectsV2Request = {
-      Bucket: environment.bucket_name,
-      MaxKeys: MAX_KEYS,
-      Prefix: `${this.kakaoId}`,
-    };
-
-    const listAllKeys = (params: AWS.S3.ListObjectsV2Request, out = []) =>
-      new Promise((resolve, reject) => {
-        this.bucket
-          .listObjectsV2(params)
-          .promise()
-          .then(({Contents, IsTruncated, NextContinuationToken}) => {
-            this.contents = Contents as any;
-            !IsTruncated
-              ? resolve(out)
-              : resolve(listAllKeys(Object.assign(params, {ContinuationToken: NextContinuationToken}), out));
-          })
-          .catch(reject);
-      });
-
-    listAllKeys(params);
   }
 }

@@ -1,6 +1,7 @@
 import {Action, createFeatureSelector, createReducer, createSelector} from '@ngrx/store';
 import {mutableOn} from 'ngrx-etc';
 import * as mainActions from '../actions/main.action';
+import {set} from 'lodash';
 
 export interface State {
   user?: {
@@ -9,6 +10,14 @@ export interface State {
     nickname: string;
     profileURL: string;
   };
+  feedList?: {
+    createdAt: string;
+    createdBy: string;
+    imgUrl: string;
+    likeCounts: number;
+    title: string;
+    content: string;
+  }[];
 }
 
 export const initialState: State = {
@@ -18,6 +27,7 @@ export const initialState: State = {
     nickname: '',
     profileURL: '',
   },
+  feedList: [],
 };
 
 const mainReducer = createReducer(
@@ -25,6 +35,7 @@ const mainReducer = createReducer(
   mutableOn(mainActions.loadMainDataComplete, (state: State, {res}) => {
     if (res.data) {
       state.user = res?.data[0]?.user;
+      set(state, ['feedList'], res?.feedList);
     }
   })
 );
@@ -32,6 +43,7 @@ const mainReducer = createReducer(
 export const selectMain = createFeatureSelector<State>('main');
 export const selectUser = createSelector(selectMain, state => state.user);
 export const selectUserKakaoId = createSelector(selectMain, state => state.user?.kakaoId ?? NaN);
+export const selectFeedList = createSelector(selectMain, state => state.feedList);
 
 export function reducer(state = initialState, action: Action): State {
   return mainReducer(state, action);

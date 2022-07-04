@@ -1,5 +1,12 @@
-<div class="icon_wrapper">
-  <a href="./draw"><span class="material-icons-outlined icon_draw">draw</span></a>
-</div>
+<ng-container *ngIf="viewModel$ | async as vm">
+  <div class="home_banner">
+    (배너영역) 캐릭터를 생성하고, 자유롭게 꾸며보세요!
+    <div class="icon_wrapper">
+      <a href="/draw"><span class="material-icons-outlined icon_draw">draw</span></a>
+    </div>
+  </div>
 
-<div style="position: relative; top: 200px">피드 기능 개발중!</div>
+  <div class="feed_wrapper" *ngFor="let feed of vm.feedList">
+    <app-feed-item [feed]="feed"></app-feed-item>
+  </div>
+</ng-container>

@@ -1,0 +1,36 @@
+.feed_item_wrapper {
+  border-radius: 8px;
+  width: 100%;
+  background-color: white;
+  box-shadow: 2px 2px 3px 1px lightgray;
+}
+
+.profile_wrapper {
+  width: 100%;
+  height: 50px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
+}
+
+.profile_img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid white;
+  margin: 0 8px;
+  border: 1px solid black;
+}
+
+.feed_item_img {
+  width: 100%;
+  height: 350px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 1px solid black;
+}
+
+.feed_info_wrapper {
+  height: 100px;
+}

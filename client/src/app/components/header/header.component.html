@@ -2,12 +2,20 @@
   <a href="/home" class="title">
     <img src="assets/logo.png" alt="logo" class="logo_img" />
   </a>
- 
+
   <div ngbDropdown>
-    <img *ngIf="vm.profileURL.length; else noUser" ngbDropdownToggle id="dropdownBasic1" [src]="vm.profileURL" alt="userProfileURL" class="profile_img" />
-    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" style="min-width: 80px;">
+    <img
+      *ngIf="vm.profileURL.length; else noUser"
+      ngbDropdownToggle
+      id="dropdownBasic1"
+      [src]="vm.profileURL"
+      alt="userProfileURL"
+      class="profile_img"
+    />
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" style="min-width: 80px">
       <!-- <div style="font-size: 13px;" ngbDropdownItem >마이 페이지</div> -->
-      <div style="font-size: 13px;" ngbDropdownItem (click)="onClickLogout()">로그아웃</div>
+      <a href="/mypage" style="font-size: 13px" ngbDropdownItem>마이페이지</a>
+      <div style="font-size: 13px" ngbDropdownItem (click)="onClickLogout()">로그아웃</div>
     </div>
   </div>
   <ng-template #noUser>

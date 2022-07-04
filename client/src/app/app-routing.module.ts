@@ -24,6 +24,11 @@ const routes: Routes = [
         loadChildren: () => import('./modules/draw/draw.module').then(mod => mod.DrawModule),
         data: {title: '그리기'},
       },
+      {
+        path: 'mypage',
+        loadChildren: () => import('./modules/mypage/mypage.module').then(mod => mod.MypageModule),
+        data: {title: '마이페이지'},
+      },
     ],
   },
   {

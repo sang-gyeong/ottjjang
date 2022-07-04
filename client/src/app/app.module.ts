@@ -16,7 +16,7 @@ import {MainGuard} from './guards/main.guard';
 import {PcHeaderComponent} from './components/header/pc-header/pc-header.component';
 import {EffectsModule} from '@ngrx/effects';
 import {environment} from 'src/environments/environment';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent, WrapperComponent, PcHeaderComponent],

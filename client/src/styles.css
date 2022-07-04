@@ -260,7 +260,7 @@ header .logo_img {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; /* enables “momentum” (smooth) scrolling */
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 55px;
 }
 
 .pc_head {
@@ -321,16 +321,9 @@ header .logo_img {
 }
 
 .icon_wrapper {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  border: 1px solid #f2f2f2;
-  display: flex;
   justify-content: center;
   align-items: center;
+  width: 100px;
   box-shadow: 2px 2px 2px #d4d4d4;
   background-color: white;
 }

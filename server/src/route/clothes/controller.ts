@@ -52,7 +52,6 @@ const deleteClothesItem = async (
     const { kakaoId } = req.user as IJwtPayload;
     const { id } = req.query;
 
-    console.log(req);
     if (!id)
       return res.status(400).json({ message: "Parameter Error: Clotheskey" });
 

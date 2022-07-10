@@ -22,7 +22,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const loadDatabases = async (): Promise<void> => {
-  await typeorm.createConnection().catch(err => console.log("Data Access Error : ", err));
+  await typeorm
+    .createConnection()
+    .catch((err) => console.log("Data Access Error : ", err));
   console.log("MySQL Connected!");
   // await mongoose.connect(process.env.MONGO_URI as string, {
   //   useNewUrlParser: true,
@@ -45,7 +47,7 @@ const startApp = async (): Promise<void> => {
     app.use(morgan("dev"));
 
     const options = {
-      origin: process.env.SERVICE_URL,
+      origin: "http://localhost:8080",
       credentials: true,
     };
 

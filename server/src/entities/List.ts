@@ -1,7 +1,16 @@
-import { Entity, BaseEntity, Column, CreateDateColumn } from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity()
 export default class List extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  _uid!: number;
+
   @Column({ unique: true })
   id!: string;
 
@@ -12,7 +21,7 @@ export default class List extends BaseEntity {
   color!: string;
 
   @CreateDateColumn()
-  createDate!: Date;
+  createDate?: Date;
 
   @Column()
   order!: number;

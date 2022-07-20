@@ -1,3 +1,4 @@
+import { authenticateWithJwt } from "./../../middlewares/auth";
 import { IdentityStore } from "aws-sdk";
 import { Request, Response, NextFunction } from "express";
 import { toNumber } from "lodash";
@@ -113,11 +114,11 @@ const addList = async (
       return res.status(400).json({ message: "Parameter Error: No Body" });
     }
 
-    const listId = listService.addList(body);
+    const { listId, pos } = await listService.addList(body);
 
     if (!listId) return res.status(404).json({ message: "List Not Found" });
 
-    return res.json({ success: true, data: listId }).status(204).end();
+    return res.json({ success: true, data: { listId, pos } }).status(204).end();
   } catch (err) {
     console.error(err);
     return next(err);

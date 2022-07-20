@@ -30,21 +30,24 @@ const addList = async ({
   try {
     const lists = await getLists();
     const list = new List();
+    let pos = 0;
 
     list.id = id;
     list.title = title;
     list.color = color;
 
     if (!lists.length) {
-      list.pos = 65535;
+      pos = 65535;
     } else {
       const length = lists.length;
-      list.pos = lists[length - 1].pos + 65536;
+      pos = lists[length - 1].pos + 65536;
     }
+
+    list.pos = pos;
 
     await list.save();
 
-    return true;
+    return { listId: id, pos };
   } catch (e) {
     return false;
   }

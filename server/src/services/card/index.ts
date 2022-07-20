@@ -15,27 +15,29 @@ const addCard = async ({
       { relations: ["cards"] }
     )) as List;
 
-    console.log("=list : ", list);
     const cards = list.cards;
     const length = cards.length;
 
     if (!list) return false;
 
-    const card = new Card();
+    const cardToAdd = new Card();
     const id = createRandom();
 
     let pos = 0;
-    card.id = id;
-    card.content = content;
+    cardToAdd.id = id;
+    cardToAdd.listId = listId;
+    cardToAdd.content = content;
 
     if (!length) {
       pos = 65535;
     } else {
       pos = cards[length - 1].pos + 65536;
     }
-    card.pos = pos;
+    cardToAdd.pos = pos;
 
-    list.cards.push(card as Card);
+    await cardToAdd.save();
+
+    list.cards.push(cardToAdd as Card);
     console.log("=list : ", list);
     await list.save();
     return { listId, cardId: id, pos };

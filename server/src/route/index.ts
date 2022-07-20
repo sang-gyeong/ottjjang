@@ -11,6 +11,7 @@ import artistRoute from "./artist";
 import clothesRoute from "./clothes";
 import magRoute from "./mag";
 import listRoute from "./list";
+import cardRoute from "./card";
 import playlistRoute from "./playlist";
 import {
   authenticateWithJwt,
@@ -28,6 +29,7 @@ route.use("/library", authenticateWithJwt, libraryRoute);
 route.use("/track", trackRoute);
 route.use("/album", albumRoute);
 route.use("/list", listRoute);
+route.use("/card", cardRoute);
 route.use("/artist", artistRoute);
 route.use("/clothes", authenticateWithJwt, clothesRoute);
 route.use("/main", authenticateWithJwt, magRoute);

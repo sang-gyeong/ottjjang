@@ -1,17 +1,15 @@
-import { orderBy } from "lodash";
 import {
   Entity,
   BaseEntity,
   Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
-  OneToOne,
-  OneToMany,
+  ManyToOne,
 } from "typeorm";
-import Card from "./Card";
+import List from "./List";
 
 @Entity({ orderBy: { pos: "ASC" } })
-export default class List extends BaseEntity {
+export default class Card extends BaseEntity {
   @PrimaryGeneratedColumn()
   _uid!: number;
 
@@ -19,10 +17,10 @@ export default class List extends BaseEntity {
   id!: string;
 
   @Column()
-  title!: string;
+  listId!: string;
 
   @Column()
-  color!: string;
+  content!: string;
 
   @CreateDateColumn()
   createDate?: Date;
@@ -30,6 +28,6 @@ export default class List extends BaseEntity {
   @Column()
   pos!: number;
 
-  @OneToMany(() => Card, (card) => card.list)
-  cards!: Card[];
+  @ManyToOne(() => List, (list) => list.cards)
+  list!: List;
 }

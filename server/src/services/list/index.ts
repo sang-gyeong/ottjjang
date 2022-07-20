@@ -2,12 +2,10 @@ import List from "../../entities/List";
 import { createRandom } from "../../utils";
 
 const getLists = (): Promise<List[]> => {
-  return List.find();
-  // return List.createQueryBuilder("mag")
-  //   .leftJoinAndSelect("mag.tracks", "track")
-  //   .leftJoinAndSelect("track.album", "album")
-  //   .leftJoinAndSelect("track.artists", "artist")
-  //   .getMany();
+  // return List.find();
+  return List.createQueryBuilder("list")
+    .leftJoinAndSelect("list.cards", "cards")
+    .getMany();
 };
 
 const getListByListId = (listId: string): Promise<List | undefined> => {

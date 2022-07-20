@@ -31,12 +31,16 @@ const addList = async ({
     const lists = await getLists();
     const list = new List();
 
-    console.log("id : ", id);
-
     list.id = id;
     list.title = title;
     list.color = color;
-    list.order = lists.length;
+
+    if (!lists.length) {
+      list.pos = 65535;
+    } else {
+      const length = lists.length;
+      list.pos = lists[length - 1].pos + 65536;
+    }
 
     await list.save();
 
@@ -70,4 +74,27 @@ const editList = async (
   return true;
 };
 
-export { getLists, getListByListId, deleteList, addList, editList };
+const reorderList = async (
+  id: string,
+  { pos }: { pos: number }
+): Promise<boolean> => {
+  const list = (await List.findOne({ id })) as List;
+
+  console.log("list : ", list);
+
+  if (!list) return false;
+
+  list.pos = pos;
+
+  await list.save();
+  return true;
+};
+
+export {
+  getLists,
+  getListByListId,
+  deleteList,
+  addList,
+  editList,
+  reorderList,
+};

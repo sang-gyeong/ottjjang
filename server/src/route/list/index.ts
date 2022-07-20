@@ -5,6 +5,7 @@ import {
   addList,
   deleteList,
   editList,
+  reorderList,
 } from "./controller";
 
 const route = express.Router();
@@ -14,6 +15,7 @@ route.get("/:id", getListByListId);
 route.post("/", addList);
 route.put("/:id", editList);
 route.delete("/:id", deleteList);
+route.put("/reorder/:id", reorderList);
 
 export default route;
 

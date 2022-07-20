@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-@Entity()
+@Entity({ orderBy: { pos: "ASC" } })
 export default class List extends BaseEntity {
   @PrimaryGeneratedColumn()
   _uid!: number;
@@ -24,5 +24,5 @@ export default class List extends BaseEntity {
   createDate?: Date;
 
   @Column()
-  order!: number;
+  pos!: number;
 }

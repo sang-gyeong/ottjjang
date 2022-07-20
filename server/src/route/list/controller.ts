@@ -60,6 +60,25 @@ const editList = async (
   }
 };
 
+const reorderList = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+
+    console.log(id, body);
+
+    if (!id)
+      return res.status(400).json({ message: "Parameter Error: List Id" });
+
+    const isSuccess = listService.reorderList(id, body);
+    if (!isSuccess) return res.status(404).json({ message: "List Not Found" });
+    return res.json({ success: true, data: id }).status(204).end();
+  } catch (err) {
+    console.error(err);
+    return next(err);
+  }
+};
+
 const deleteList = async (
   req: Request,
   res: Response,
@@ -105,4 +124,11 @@ const addList = async (
   }
 };
 
-export { getLists, getListByListId, addList, deleteList, editList };
+export {
+  getLists,
+  getListByListId,
+  addList,
+  deleteList,
+  editList,
+  reorderList,
+};

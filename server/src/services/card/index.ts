@@ -35,7 +35,7 @@ const addCard = async ({
     }
     card.pos = pos;
 
-    list.cards.push(card);
+    list.cards.push(card as Card);
     console.log("=list : ", list);
     await list.save();
     return { listId, cardId: id, pos };

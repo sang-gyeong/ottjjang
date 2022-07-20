@@ -1,4 +1,5 @@
 import List from "../../entities/List";
+import { createRandom } from "../../utils";
 
 const getLists = (): Promise<List[]> => {
   return List.find();
@@ -19,17 +20,17 @@ const getListByListId = (listId: string): Promise<List | undefined> => {
 };
 
 const addList = async ({
-  id,
   title,
   color,
 }: {
-  id: string;
   title: string;
   color: string;
 }): Promise<any> => {
   try {
     const lists = await getLists();
     const list = new List();
+
+    const id = createRandom();
     let pos = 0;
 
     list.id = id;

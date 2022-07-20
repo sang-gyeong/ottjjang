@@ -116,7 +116,7 @@ const addList = async (
 
     const { listId, pos } = await listService.addList(body);
 
-    if (!listId) return res.status(404).json({ message: "List Not Found" });
+    // if (!listId) return res.status(404).json({ message: "List Not Found" });
 
     return res.json({ success: true, data: { listId, pos } }).status(204).end();
   } catch (err) {

@@ -10,7 +10,10 @@ const addCard = async ({
   content: string;
 }): Promise<any> => {
   try {
-    const list = (await List.findOne(listId, { relations: ["cards"] })) as List;
+    const list = (await List.findOne(
+      { id: listId },
+      { relations: ["cards"] }
+    )) as List;
     const cards = list.cards;
     const length = cards.length;
 

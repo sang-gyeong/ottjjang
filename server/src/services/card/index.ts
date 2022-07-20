@@ -14,6 +14,8 @@ const addCard = async ({
       { id: listId },
       { relations: ["cards"] }
     )) as List;
+
+    console.log("=list : ", list);
     const cards = list.cards;
     const length = cards.length;
 
@@ -34,6 +36,7 @@ const addCard = async ({
     card.pos = pos;
 
     list.cards.push(card);
+    console.log("=list : ", list);
     await list.save();
     return { listId, cardId: id, pos };
   } catch (e) {

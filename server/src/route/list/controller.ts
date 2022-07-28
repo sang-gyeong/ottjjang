@@ -140,11 +140,19 @@ const addListWithCard = async (
       return res.status(400).json({ message: "Parameter Error: No Body" });
     }
 
-    const { listId, pos: listPos } = await listService.addList({
+    const {
+      listId,
+      pos: listPos,
+      title,
+    } = await listService.addList({
       color: body.color,
       title: "Untitled",
     });
-    const { cardId, pos: cardPos } = await cardService.copy({
+    const {
+      cardId,
+      pos: cardPos,
+      content,
+    } = await cardService.copy({
       cardId: body.cardId,
       listId: listId,
     });
@@ -156,8 +164,8 @@ const addListWithCard = async (
       .json({
         success: true,
         data: {
-          list: { listId, pos: listPos },
-          card: { cardId, pos: cardPos },
+          list: { listId, pos: listPos, title },
+          card: { cardId, pos: cardPos, content },
         },
       })
       .status(204)

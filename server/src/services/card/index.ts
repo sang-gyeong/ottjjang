@@ -96,7 +96,7 @@ const copy = async ({
     list.cards.push(cardToAdd as Card);
     console.log("=list : ", list);
     await list.save();
-    return { listId, cardId: newCardId, pos };
+    return { listId, cardId: newCardId, pos, content };
 
     // const originalCard = (await Card.findOne({ id: cardId })) as Card;
 

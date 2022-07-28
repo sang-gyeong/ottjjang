@@ -47,7 +47,7 @@ const addList = async ({
 
     await list.save();
 
-    return { listId: id, pos };
+    return { listId: id, pos, title };
   } catch (e) {
     return false;
   }
@@ -56,8 +56,6 @@ const addList = async ({
 const deleteList = async (id: string): Promise<boolean> => {
   const listToRemove = (await List.findOne({ id })) as List;
   if (!listToRemove) return false;
-
-  listToRemove.cards.forEach((card) => card.remove());
 
   await List.delete({ id });
   return true;

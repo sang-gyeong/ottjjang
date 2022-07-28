@@ -59,6 +59,8 @@ const copy = async ({
       { relations: ["cards"] }
     )) as List;
 
+    console.log("list", list);
+
     const originalCard = (await Card.findOne({ id: cardId })) as Card;
 
     if (!list || !originalCard) return false;

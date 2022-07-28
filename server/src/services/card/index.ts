@@ -75,6 +75,7 @@ const copy = async ({
 
     const cards = list.cards;
     const length = cards.length;
+    const content = `copy of ${originalCard.content}`;
 
     const cardToAdd = new Card();
     const newCardId = createRandom();
@@ -82,7 +83,7 @@ const copy = async ({
     let pos = 0;
     cardToAdd.id = newCardId;
     cardToAdd.listId = listId;
-    cardToAdd.content = `copy of ${originalCard.content}`;
+    cardToAdd.content = content;
 
     if (!length) {
       pos = 65535;

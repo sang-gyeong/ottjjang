@@ -3,6 +3,7 @@ import { IdentityStore } from "aws-sdk";
 import { Request, Response, NextFunction } from "express";
 import { toNumber } from "lodash";
 import * as listService from "../../services/list";
+import * as cardService from "../../services/card";
 
 const getLists = async (
   req: Request,
@@ -125,6 +126,48 @@ const addList = async (
   }
 };
 
+const addListWithCard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const body = req.body;
+
+    console.log("body : ", body);
+
+    if (!body) {
+      return res.status(400).json({ message: "Parameter Error: No Body" });
+    }
+
+    const { listId, pos: listPos } = await listService.addList({
+      ...body,
+      title: "Untitled",
+    });
+    const { cardId, pos: cardPos } = await cardService.copy({
+      ...body,
+      listId: listId,
+    });
+
+    if (!listId) return res.status(404).json({ message: "List Not Found" });
+    if (!cardId) return res.status(404).json({ message: "Card Not Found" });
+
+    return res
+      .json({
+        success: true,
+        data: {
+          list: { listId, pos: listPos },
+          card: { cardId, pos: cardPos },
+        },
+      })
+      .status(204)
+      .end();
+  } catch (err) {
+    console.error(err);
+    return next(err);
+  }
+};
+
 export {
   getLists,
   getListByListId,
@@ -132,4 +175,5 @@ export {
   deleteList,
   editList,
   reorderList,
+  addListWithCard,
 };

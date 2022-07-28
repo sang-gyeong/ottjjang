@@ -2,11 +2,11 @@ import List from "../../entities/List";
 import { createRandom } from "../../utils";
 
 const getLists = (): Promise<List[]> => {
-  // return List.find();
-  return List.createQueryBuilder("list")
-    .leftJoinAndSelect("list.cards", "cards")
-    .orderBy("cards.pos", "ASC")
-    .getMany();
+  return List.createQueryBuilder("list").orderBy("pos", "ASC").getMany();
+  // return List.createQueryBuilder("list")
+  //   .leftJoinAndSelect("list.cards", "cards")
+  //   .orderBy("cards.pos", "ASC")
+  //   .getMany();
 };
 
 const getListByListId = (listId: string): Promise<List | undefined> => {

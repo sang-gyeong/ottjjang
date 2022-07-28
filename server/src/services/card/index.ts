@@ -46,6 +46,70 @@ const addCard = async ({
   }
 };
 
+const copy = async ({
+  listId,
+  cardId,
+}: {
+  listId: string;
+  cardId: string;
+}): Promise<any> => {
+  try {
+    const list = (await List.findOne(
+      { id: listId },
+      { relations: ["cards"] }
+    )) as List;
+
+    const originalCard = (await Card.findOne({ id: cardId })) as Card;
+
+    if (!list || !originalCard) return false;
+
+    const cards = list.cards;
+    const length = cards.length;
+
+    const cardToAdd = new Card();
+    const newCardId = createRandom();
+
+    let pos = 0;
+    cardToAdd.id = newCardId;
+    cardToAdd.listId = listId;
+    cardToAdd.content = `copy of ${originalCard.content}`;
+
+    if (!length) {
+      pos = 65535;
+    } else {
+      pos = cards[length - 1].pos + 65536;
+    }
+    cardToAdd.pos = pos;
+
+    await cardToAdd.save();
+
+    list.cards.push(cardToAdd as Card);
+    console.log("=list : ", list);
+    await list.save();
+    return { listId, cardId: newCardId, pos };
+
+    // const originalCard = (await Card.findOne({ id: cardId })) as Card;
+
+    // console.log("originalCard : ", originalCard);
+
+    // if (!originalCard) return false;
+
+    // const cardToAdd = new Card();
+    // const newCardId = createRandom();
+
+    // let pos = 0;
+    // cardToAdd.id = newCardId;
+    // cardToAdd.listId = listId;
+    // cardToAdd.content = `copy of ${originalCard.content}`;
+    // cardToAdd.pos = 65535;
+
+    // await cardToAdd.save();
+    // return { listId, cardId: newCardId, pos };
+  } catch (e) {
+    return false;
+  }
+};
+
 const deleteCard = async (id: string): Promise<boolean> => {
   // const listToRemove = (await List.findOne({ id })) as List;
   // if (!listToRemove) return false;
@@ -86,4 +150,4 @@ const reorderCard = async (
   return true;
 };
 
-export { deleteCard, addCard, editCard, reorderCard };
+export { deleteCard, addCard, editCard, reorderCard, copy };

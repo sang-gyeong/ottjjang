@@ -141,11 +141,11 @@ const addListWithCard = async (
     }
 
     const { listId, pos: listPos } = await listService.addList({
-      ...body,
+      color: body.color,
       title: "Untitled",
     });
     const { cardId, pos: cardPos } = await cardService.copy({
-      ...body,
+      cardId: body.cardId,
       listId: listId,
     });
 

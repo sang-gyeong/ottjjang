@@ -1,8 +1,15 @@
 import * as express from "express";
-import { addCard, deleteCard, editCard, reorderCard } from "./controller";
+import {
+  addCard,
+  getCards,
+  deleteCard,
+  editCard,
+  reorderCard,
+} from "./controller";
 
 const route = express.Router();
 
+route.get("/", getCards);
 route.post("/", addCard);
 route.put("/:id", editCard);
 route.delete("/:id", deleteCard);

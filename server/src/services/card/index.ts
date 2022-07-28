@@ -2,6 +2,14 @@ import Card from "../../entities/Card";
 import List from "../../entities/List";
 import { createRandom } from "../../utils";
 
+const getCards = (): Promise<Card[]> => {
+  return Card.createQueryBuilder("card").orderBy("pos", "ASC").getMany();
+  // return List.createQueryBuilder("list")
+  //   .leftJoinAndSelect("list.cards", "cards")
+  //   .orderBy("cards.pos", "ASC")
+  //   .getMany();
+};
+
 const addCard = async ({
   listId,
   content,
@@ -152,4 +160,4 @@ const reorderCard = async (
   return true;
 };
 
-export { deleteCard, addCard, editCard, reorderCard, copy };
+export { getCards, deleteCard, addCard, editCard, reorderCard, copy };

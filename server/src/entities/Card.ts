@@ -28,6 +28,6 @@ export default class Card extends BaseEntity {
   @Column()
   pos!: number;
 
-  @ManyToOne(() => List, (list) => list.cards)
+  @ManyToOne(() => List, (list) => list.cards, { onDelete: "CASCADE" })
   list!: List;
 }

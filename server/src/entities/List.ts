@@ -30,6 +30,6 @@ export default class List extends BaseEntity {
   @Column()
   pos!: number;
 
-  @OneToMany(() => Card, (card) => card.list)
+  @OneToMany(() => Card, (card) => card.list, { cascade: true })
   cards!: Card[];
 }

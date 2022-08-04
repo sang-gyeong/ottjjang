@@ -52,7 +52,7 @@ const editCard = async (
     if (!id)
       return res.status(400).json({ message: "Parameter Error: List Id" });
 
-    const isSuccess = listService.editList(id, body);
+    const isSuccess = cardService.editCard(id, body);
     if (!isSuccess) return res.status(404).json({ message: "List Not Found" });
     return res.json({ success: true, data: id }).status(204).end();
   } catch (err) {
@@ -71,7 +71,7 @@ const reorderCard = async (req: Request, res: Response, next: NextFunction) => {
     if (!id)
       return res.status(400).json({ message: "Parameter Error: List Id" });
 
-    const isSuccess = listService.reorderList(id, body);
+    const isSuccess = cardService.reorderCard(id, body);
     if (!isSuccess) return res.status(404).json({ message: "List Not Found" });
     return res.json({ success: true, data: id }).status(204).end();
   } catch (err) {
@@ -91,7 +91,7 @@ const deleteCard = async (
     if (!id)
       return res.status(400).json({ message: "Parameter Error: List Id" });
 
-    const isSuccess = listService.deleteList(id);
+    const isSuccess = cardService.deleteCard(id);
     if (!isSuccess) return res.status(404).json({ message: "List Not Found" });
     return res.json({ success: true, data: id }).status(204).end();
   } catch (err) {
@@ -119,7 +119,7 @@ const addCard = async (
     if (!listId) return res.status(404).json({ message: "List Not Found" });
 
     return res
-      .json({ success: true, data: { listId, cardId, pos } })
+      .json({ success: true, data: { listId, cardId } })
       .status(204)
       .end();
   } catch (err) {

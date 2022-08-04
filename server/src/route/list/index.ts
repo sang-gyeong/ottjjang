@@ -7,11 +7,12 @@ import {
   editList,
   addListWithCard,
   reorderList,
+  getListsByUserId,
 } from "./controller";
 
 const route = express.Router();
 
-route.get("/", getLists);
+route.get("/", getListsByUserId);
 route.get("/:id", getListByListId);
 route.post("/", addList);
 route.post("/copy", addListWithCard);

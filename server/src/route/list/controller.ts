@@ -1,4 +1,4 @@
-import { authenticateWithJwt } from "./../../middlewares/auth";
+import { authenticateWithJwt, IJwtPayload } from "./../../middlewares/auth";
 import { IdentityStore } from "aws-sdk";
 import { Request, Response, NextFunction } from "express";
 import { toNumber } from "lodash";
@@ -20,6 +20,22 @@ const getLists = async (
   } catch (err) {
     console.error(err);
     return next(err);
+  }
+};
+
+const getListsByUserId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { kakaoId } = req.user as IJwtPayload;
+    const lists = await listService.getListsByUserId(kakaoId);
+
+    res.status(200).json({ success: true, data: lists });
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
 
@@ -45,6 +61,7 @@ const editList = async (
   next: NextFunction
 ): Promise<any> => {
   try {
+    const { kakaoId } = req.user as IJwtPayload;
     const { id } = req.params;
     const body = req.body;
 
@@ -53,7 +70,7 @@ const editList = async (
     if (!id)
       return res.status(400).json({ message: "Parameter Error: List Id" });
 
-    const isSuccess = listService.editList(id, body);
+    const isSuccess = listService.editList(kakaoId, id, body);
     if (!isSuccess) return res.status(404).json({ message: "List Not Found" });
     return res.json({ success: true, data: id }).status(204).end();
   } catch (err) {
@@ -64,6 +81,7 @@ const editList = async (
 
 const reorderList = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const { kakaoId } = req.user as IJwtPayload;
     const { id } = req.params;
     const body = req.body;
 
@@ -72,7 +90,7 @@ const reorderList = async (req: Request, res: Response, next: NextFunction) => {
     if (!id)
       return res.status(400).json({ message: "Parameter Error: List Id" });
 
-    const isSuccess = listService.reorderList(id, body);
+    const isSuccess = listService.reorderList(kakaoId, id, body);
     if (!isSuccess) return res.status(404).json({ message: "List Not Found" });
     return res.json({ success: true, data: id }).status(204).end();
   } catch (err) {
@@ -87,12 +105,13 @@ const deleteList = async (
   next: NextFunction
 ): Promise<any> => {
   try {
+    const { kakaoId } = req.user as IJwtPayload;
     const { id } = req.params;
 
     if (!id)
       return res.status(400).json({ message: "Parameter Error: List Id" });
 
-    const isSuccess = listService.deleteList(id);
+    const isSuccess = listService.deleteList(kakaoId, id);
     if (!isSuccess) return res.status(404).json({ message: "List Not Found" });
     return res.json({ success: true, data: id }).status(204).end();
   } catch (err) {
@@ -107,6 +126,7 @@ const addList = async (
   next: NextFunction
 ): Promise<any> => {
   try {
+    const { kakaoId } = req.user as IJwtPayload;
     const body = req.body;
 
     console.log("body : ", body);
@@ -115,7 +135,7 @@ const addList = async (
       return res.status(400).json({ message: "Parameter Error: No Body" });
     }
 
-    const { listId, pos } = await listService.addList(body);
+    const { listId, pos } = await listService.addList(kakaoId, body);
 
     // if (!listId) return res.status(404).json({ message: "List Not Found" });
 
@@ -132,6 +152,7 @@ const addListWithCard = async (
   next: NextFunction
 ): Promise<any> => {
   try {
+    const { kakaoId } = req.user as IJwtPayload;
     const body = req.body;
 
     console.log("body : ", body);
@@ -144,7 +165,7 @@ const addListWithCard = async (
       listId,
       pos: listPos,
       title,
-    } = await listService.addList({
+    } = await listService.addList(kakaoId, {
       color: body.color,
       title: "Untitled",
     });
@@ -185,4 +206,5 @@ export {
   editList,
   reorderList,
   addListWithCard,
+  getListsByUserId,
 };

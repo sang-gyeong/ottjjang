@@ -7,8 +7,10 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   OneToMany,
+  ManyToMany,
 } from "typeorm";
 import Card from "./Card";
+import User from "./User";
 
 @Entity({ orderBy: { pos: "ASC" } })
 export default class List extends BaseEntity {
@@ -32,4 +34,7 @@ export default class List extends BaseEntity {
 
   @OneToMany(() => Card, (card) => card.list, { cascade: true })
   cards!: Card[];
+
+  @ManyToMany(() => User, (user) => user.lists, { onDelete: "CASCADE" })
+  users!: User[];
 }

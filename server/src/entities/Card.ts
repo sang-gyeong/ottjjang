@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  ManyToMany,
 } from "typeorm";
 import List from "./List";
+import User from "./User";
 
 @Entity({ orderBy: { pos: "ASC" } })
 export default class Card extends BaseEntity {
@@ -30,4 +32,7 @@ export default class Card extends BaseEntity {
 
   @ManyToOne(() => List, (list) => list.cards, { onDelete: "CASCADE" })
   list!: List;
+
+  @ManyToMany(() => User, (user) => user.cards, { onDelete: "CASCADE" })
+  users!: User[];
 }

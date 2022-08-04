@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { toNumber } from "lodash";
+import { IJwtPayload } from "../../middlewares/auth";
 import * as cardService from "../../services/card";
 import * as listService from "../../services/list";
 
@@ -18,6 +19,22 @@ const getCards = async (
   } catch (err) {
     console.error(err);
     return next(err);
+  }
+};
+
+const getCardsByUserId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { id } = req.user as IJwtPayload;
+    const cards = await cardService.getCardsByUserId(id);
+
+    res.status(200).json({ success: true, data: cards });
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
 
@@ -111,4 +128,11 @@ const addCard = async (
   }
 };
 
-export { getCards, addCard, deleteCard, editCard, reorderCard };
+export {
+  getCards,
+  getCardsByUserId,
+  addCard,
+  deleteCard,
+  editCard,
+  reorderCard,
+};

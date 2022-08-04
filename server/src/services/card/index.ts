@@ -1,5 +1,6 @@
 import Card from "../../entities/Card";
 import List from "../../entities/List";
+import User from "../../entities/User";
 import { createRandom } from "../../utils";
 
 const getCards = (): Promise<Card[]> => {
@@ -8,6 +9,20 @@ const getCards = (): Promise<Card[]> => {
   //   .leftJoinAndSelect("list.cards", "cards")
   //   .orderBy("cards.pos", "ASC")
   //   .getMany();
+};
+
+const getCardsByUserId = async (id: number): Promise<any> => {
+  const user = (await User.findOne(
+    { id },
+    {
+      relations: ["cards"],
+    }
+  )) as User;
+
+  const cards = user.cards;
+  console.log(cards);
+
+  return cards;
 };
 
 const addCard = async ({
@@ -161,4 +176,12 @@ const reorderCard = async (
   return true;
 };
 
-export { getCards, deleteCard, addCard, editCard, reorderCard, copy };
+export {
+  getCards,
+  deleteCard,
+  getCardsByUserId,
+  addCard,
+  editCard,
+  reorderCard,
+  copy,
+};

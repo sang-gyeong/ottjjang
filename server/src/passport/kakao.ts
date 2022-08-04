@@ -22,9 +22,9 @@ const passportKakaoConfig = (): void => {
       const {
         id: kakaoId,
         username: nickname,
-        _json: {
-          properties: { profile_image },
-        },
+        // _json: {
+        //   properties: { profile_image },
+        // },
       } = profile;
 
       let user = await User.findOne({ kakaoId });
@@ -37,7 +37,7 @@ const passportKakaoConfig = (): void => {
         user = new User();
         user.kakaoId = kakaoId;
         user.nickname = nickname ?? "";
-        user.profileURL = profile_image;
+        user.profileURL = profile._json?.properties?.profile_image;
         await user.save();
       }
       return done(null, user);

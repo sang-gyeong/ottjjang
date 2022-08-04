@@ -28,7 +28,7 @@ route.use("/auth2", auth2Route);
 route.use("/library", authenticateWithJwt, libraryRoute);
 route.use("/track", trackRoute);
 route.use("/album", albumRoute);
-route.use("/list", listRoute);
+route.use("/list", authenticateWithJwt, listRoute);
 route.use("/card", cardRoute);
 route.use("/artist", artistRoute);
 route.use("/clothes", authenticateWithJwt, clothesRoute);

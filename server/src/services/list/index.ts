@@ -1,4 +1,6 @@
+import { includes, map } from "lodash";
 import List from "../../entities/List";
+import User from "../../entities/User";
 import { createRandom } from "../../utils";
 
 const getLists = (): Promise<List[]> => {
@@ -7,6 +9,20 @@ const getLists = (): Promise<List[]> => {
   //   .leftJoinAndSelect("list.cards", "cards")
   //   .orderBy("cards.pos", "ASC")
   //   .getMany();
+};
+
+const getListsByUserId = async (kakaoId: string): Promise<any> => {
+  const user = (await User.findOne(
+    { kakaoId },
+    {
+      relations: ["lists"],
+    }
+  )) as User;
+
+  const lists = user.lists;
+  console.log(lists);
+
+  return lists;
 };
 
 const getListByListId = (listId: string): Promise<List | undefined> => {
@@ -18,23 +34,33 @@ const getListByListId = (listId: string): Promise<List | undefined> => {
     .getOne();
 };
 
-const addList = async ({
-  title,
-  color,
-}: {
-  title: string;
-  color: string;
-}): Promise<any> => {
+const addList = async (
+  kakaoId: string,
+  {
+    title,
+    color,
+  }: {
+    title: string;
+    color: string;
+  }
+): Promise<any> => {
   try {
+    const user = (await User.findOne(
+      { kakaoId },
+      {
+        relations: ["lists"],
+      }
+    )) as User;
+
     const lists = await getLists();
-    const list = new List();
+    const listToAdd = new List();
 
     const id = createRandom();
     let pos = 0;
 
-    list.id = id;
-    list.title = title;
-    list.color = color;
+    listToAdd.id = id;
+    listToAdd.title = title;
+    listToAdd.color = color;
 
     if (!lists.length) {
       pos = 65535;
@@ -43,9 +69,12 @@ const addList = async ({
       pos = lists[length - 1].pos + 65536;
     }
 
-    list.pos = pos;
+    listToAdd.pos = pos;
 
-    await list.save();
+    await listToAdd.save();
+
+    user.lists.push(listToAdd as List);
+    await user.save();
 
     return { listId: id, pos, title };
   } catch (e) {
@@ -53,44 +82,78 @@ const addList = async ({
   }
 };
 
-const deleteList = async (id: string): Promise<boolean> => {
+const deleteList = async (kakaoId: string, id: string): Promise<boolean> => {
+  const user = (await User.findOne(
+    { kakaoId },
+    { relations: ["lists"] }
+  )) as User;
+
   const listToRemove = (await List.findOne({ id })) as List;
   if (!listToRemove) return false;
+
+  user.lists = user.lists.filter((list) => list.id !== listToRemove.id);
+
+  await user.save();
 
   await List.delete({ id });
   return true;
 };
 
 const editList = async (
+  kakaoId: string,
   id: string,
   { title, color }: { title: string; color: string }
 ): Promise<boolean> => {
-  const list = (await List.findOne({ id })) as List;
+  const user = (await User.findOne(
+    { kakaoId },
+    { relations: ["lists"] }
+  )) as User;
 
-  console.log("list : ", list);
+  const listToEdit = (await List.findOne({ id })) as List;
 
-  if (!list) return false;
+  console.log("list : ", listToEdit);
 
-  list.title = title;
-  list.color = color;
+  if (!listToEdit) return false;
 
-  await list.save();
+  listToEdit.title = title;
+  listToEdit.color = color;
+
+  user.lists.map((list) =>
+    list.id === listToEdit.id ? { ...list, title, color } : list
+  );
+
+  await listToEdit.save();
+  await user.save();
   return true;
 };
 
 const reorderList = async (
+  kakaoId: string,
   id: string,
   { pos }: { pos: number }
 ): Promise<boolean> => {
-  const list = (await List.findOne({ id })) as List;
+  const user = (await User.findOne(
+    { kakaoId },
+    { relations: ["lists"] }
+  )) as User;
 
-  console.log("list : ", list);
+  const listToReorder = (await List.findOne({ id })) as List;
 
-  if (!list) return false;
+  console.log("listToReorder : ", listToReorder);
 
-  list.pos = pos;
+  if (!listToReorder) return false;
 
-  await list.save();
+  listToReorder.pos = pos;
+
+  await listToReorder.save();
+
+  user.lists.map((list) =>
+    list.id === listToReorder.id ? { ...list, pos } : list
+  );
+
+  await listToReorder.save();
+  await user.save();
+
   return true;
 };
 
@@ -101,4 +164,5 @@ export {
   addList,
   editList,
   reorderList,
+  getListsByUserId,
 };

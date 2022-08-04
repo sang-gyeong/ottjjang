@@ -15,6 +15,8 @@ import Track from "./Track";
 import Playlist from "./Playlist";
 import Subscribe from "./Subscribe";
 import Clothes from "./Clothes";
+import List from "./List";
+import Card from "./Card";
 
 @Entity()
 export default class User extends BaseEntity {
@@ -75,4 +77,16 @@ export default class User extends BaseEntity {
   @ManyToMany(() => Track, (track) => track.users, { onDelete: "CASCADE" })
   @JoinTable({ name: "UserTrack" })
   tracks!: Track[];
+
+  @ManyToMany(() => List, (lists) => lists.users, {
+    onDelete: "CASCADE",
+  })
+  @JoinTable({ name: "UserList" })
+  lists!: List[];
+
+  @ManyToMany(() => Card, (cards) => cards.users, {
+    onDelete: "CASCADE",
+  })
+  @JoinTable({ name: "UserList" })
+  cards!: Card[];
 }

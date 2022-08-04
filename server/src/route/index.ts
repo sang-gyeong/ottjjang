@@ -32,7 +32,7 @@ route.use("/list", authenticateWithJwt, listRoute);
 route.use("/card", cardRoute);
 route.use("/artist", artistRoute);
 route.use("/clothes", authenticateWithJwt, clothesRoute);
-route.use("/main", authenticateWithJwt, magRoute);
+route.use("/main", authenticateWithJwt, userRoute);
 route.use("/playlist", playlistRoute);
 
 export default route;
